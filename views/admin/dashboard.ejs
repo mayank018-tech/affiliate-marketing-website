@@ -3,6 +3,47 @@
         <h1 class="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
     </div>
 
+    <!-- Categories Section -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-12">
+        <div class="p-6 border-b border-gray-200 flex justify-between items-center">
+            <h2 class="text-xl font-bold text-gray-900">Categories</h2>
+            <form action="/admin/categories/new" method="GET">
+                <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors text-sm font-medium">
+                    <i class="fas fa-plus mr-2"></i> Add Category
+                </button>
+            </form>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50 text-gray-500 text-sm">
+                    <tr>
+                        <th class="px-6 py-4">Name</th>
+                        <th class="px-6 py-4">Slug</th>
+                        <th class="px-6 py-4">Icon</th>
+                        <th class="px-6 py-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    <% categories.forEach(c => { %>
+                        <tr class="hover:bg-slate-50/50 transition-colors">
+                            <td class="px-6 py-4 font-semibold text-gray-900"><%= c.name %></td>
+                            <td class="px-6 py-4 text-gray-600"><%= c.slug %></td>
+                            <td class="px-6 py-4 text-gray-600"><i class="fas <%= c.icon %> text-xl"></i></td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center space-x-3">
+                                    <a href="/admin/categories/<%= c.id %>/edit" class="text-indigo-600 hover:text-indigo-800 font-medium text-sm"><i class="fas fa-edit mr-1"></i> Edit</a>
+                                    <form action="/admin/categories/<%= c.id %>/delete" method="POST" class="inline" onsubmit="return confirm('Delete this category?');">
+                                        <button type="submit" class="text-red-600 hover:text-red-800 font-medium text-sm"><i class="fas fa-trash mr-1"></i> Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <!-- Products Section -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-12">
         <div class="p-6 border-b border-gray-200 flex justify-between items-center">
