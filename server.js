@@ -56,20 +56,31 @@ async function uploadToSupabase(file) {
     const fileName = uniqueSuffix + '.jpg'; // Convert everything to jpg
     
     try {
-        // Process image: 800x800 square, contain original image, white background
-        const processedBuffer = await sharp(file.buffer)
-            .resize(800, 800, {
-                fit: 'contain',
-                background: { r: 255, g: 255, b: 255, alpha: 1 }
-            })
-            .jpeg({ quality: 90 })
-            .toBuffer();
+        let uploadBuffer = file.buffer;
+        let uploadContentType = file.mimetype;
+        let finalFileName = uniqueSuffix + '-' + file.originalname.replace(/[^a-zA-Z0-9.-]/g, '');
+
+        try {
+            // Process image: 800x800 square, contain original image, white background
+            uploadBuffer = await sharp(file.buffer)
+                .resize(800, 800, {
+                    fit: 'contain',
+                    background: { r: 255, g: 255, b: 255, alpha: 1 }
+                })
+                .jpeg({ quality: 90 })
+                .toBuffer();
+            uploadContentType = 'image/jpeg';
+            finalFileName = uniqueSuffix + '.jpg'; // Convert everything to jpg
+        } catch (sharpError) {
+            console.error('Sharp processing failed, falling back to original image:', sharpError);
+            // keep the original uploadBuffer, uploadContentType, and finalFileName
+        }
 
         const { data, error } = await supabase
             .storage
             .from('product-images')
-            .upload(fileName, processedBuffer, {
-                contentType: 'image/jpeg',
+            .upload(finalFileName, uploadBuffer, {
+                contentType: uploadContentType,
                 upsert: false
             });
             
@@ -81,11 +92,11 @@ async function uploadToSupabase(file) {
         const { data: publicUrlData } = supabase
             .storage
             .from('product-images')
-            .getPublicUrl(fileName);
+            .getPublicUrl(finalFileName);
             
         return publicUrlData.publicUrl;
-    } catch (err) {
-        console.error('Image processing/upload error:', err);
+    } catch (error) {
+        console.error('File upload error:', error);
         return null;
     }
 }
