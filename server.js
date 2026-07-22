@@ -48,30 +48,46 @@ const isAdmin = (req, res, next) => {
     res.redirect('/admin/login');
 };
 
+const sharp = require('sharp');
+
 // Helper function to upload file to Supabase Storage
 async function uploadToSupabase(file) {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const fileName = uniqueSuffix + path.extname(file.originalname);
+    const fileName = uniqueSuffix + '.jpg'; // Convert everything to jpg
     
-    const { data, error } = await supabase
-        .storage
-        .from('product-images')
-        .upload(fileName, file.buffer, {
-            contentType: file.mimetype,
-            upsert: false
-        });
+    try {
+        // Process image: 800x800 square, contain original image, white background
+        const processedBuffer = await sharp(file.buffer)
+            .resize(800, 800, {
+                fit: 'contain',
+                background: { r: 255, g: 255, b: 255, alpha: 1 }
+            })
+            .jpeg({ quality: 90 })
+            .toBuffer();
+
+        const { data, error } = await supabase
+            .storage
+            .from('product-images')
+            .upload(fileName, processedBuffer, {
+                contentType: 'image/jpeg',
+                upsert: false
+            });
+            
+        if (error) {
+            console.error('Supabase upload error:', error);
+            return null;
+        }
         
-    if (error) {
-        console.error('Supabase upload error:', error);
+        const { data: publicUrlData } = supabase
+            .storage
+            .from('product-images')
+            .getPublicUrl(fileName);
+            
+        return publicUrlData.publicUrl;
+    } catch (err) {
+        console.error('Image processing/upload error:', err);
         return null;
     }
-    
-    const { data: publicUrlData } = supabase
-        .storage
-        .from('product-images')
-        .getPublicUrl(fileName);
-        
-    return publicUrlData.publicUrl;
 }
 
 // --- PUBLIC ROUTES ---
