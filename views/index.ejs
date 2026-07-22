@@ -58,7 +58,7 @@
             <% products.forEach(product => { %>
                 <div class="product-card glass-card rounded-3xl overflow-hidden hover:bg-white/80 transition-all duration-500 border border-white/50 group relative">
                     <a href="/product/<%= product.slug %>" class="relative block overflow-hidden">
-                        <img src="<%= product.cover_image %>" alt="<%= product.title %>" class="w-full h-56 object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                        <img src="<%= product.cover_image %>" alt="<%= product.title %>" loading="lazy" class="w-full h-56 object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
                         <% if (product.badge) { %>
                             <div class="absolute top-4 right-4 bg-gradient-to-r from-accent to-pink-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg shadow-pink-500/30">
                                 <%= product.badge %>

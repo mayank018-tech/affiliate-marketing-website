@@ -102,7 +102,7 @@
                     <a href="/#trending" class="text-slate-600 hover:text-indigo-600 font-medium transition-colors">Trending</a>
                 </div>
                 
-                <div class="flex items-center space-x-4">
+                <div class="hidden md:flex items-center space-x-4">
                     <!-- Currency Selector -->
                     <div class="relative">
                         <select id="currency-selector" class="bg-white/10 text-slate-700 px-3 py-1 rounded border border-slate-200 outline-none focus:border-primary">
@@ -120,18 +120,84 @@
 
                     <% if (user && user.role === 'admin') { %>
                         <a href="/admin" class="text-indigo-600 font-bold hover:text-indigo-800 transition-colors ml-4">Dashboard</a>
-                        <a href="/admin/logout" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-300 transition-colors">
+                        <a href="/admin/logout" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-300 transition-colors whitespace-nowrap">
                             Logout
                         </a>
                     <% } else { %>
-                        <a href="/admin/login" class="bg-primary text-white px-4 py-2 rounded-full hover:bg-indigo-600 transition-colors">
+                        <a href="/admin/login" class="bg-primary text-white px-4 py-2 rounded-full hover:bg-indigo-600 transition-colors whitespace-nowrap">
                             <i class="fas fa-user mr-2"></i> Admin
                         </a>
+                    <% } %>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-indigo-600 focus:outline-none p-2">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 shadow-lg absolute w-full">
+            <div class="px-4 pt-2 pb-4 space-y-3 flex flex-col">
+                <a href="/" class="block px-3 py-2 text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-md font-medium">Home</a>
+                <a href="/#categories" class="block px-3 py-2 text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-md font-medium">Categories</a>
+                <a href="/#trending" class="block px-3 py-2 text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-md font-medium">Trending</a>
+                
+                <div class="px-3 py-2 border-t border-slate-100 mt-2">
+                    <label class="block text-sm text-slate-500 mb-1">Currency</label>
+                    <select id="mobile-currency-selector" class="w-full bg-slate-50 text-slate-700 px-3 py-2 rounded border border-slate-200 outline-none">
+                        <option value="INR">INR (₹)</option>
+                        <option value="USD">USD ($)</option>
+                        <option value="EUR">EUR (€)</option>
+                        <option value="GBP">GBP (£)</option>
+                        <option value="CAD">CAD ($)</option>
+                        <option value="AUD">AUD ($)</option>
+                    </select>
+                </div>
+                
+                <div class="px-3 py-2 border-t border-slate-100 mt-2 flex flex-col gap-2">
+                    <% if (user && user.role === 'admin') { %>
+                        <a href="/admin" class="w-full text-center bg-indigo-50 text-indigo-700 font-bold px-4 py-2 rounded-lg">Dashboard</a>
+                        <a href="/admin/logout" class="w-full text-center bg-red-50 text-red-600 font-bold px-4 py-2 rounded-lg">Logout</a>
+                    <% } else { %>
+                        <a href="/admin/login" class="w-full text-center bg-primary text-white font-bold px-4 py-2 rounded-lg">Admin Login</a>
                     <% } %>
                 </div>
             </div>
         </div>
     </nav>
+
+    <script>
+        // Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            if(btn && menu) {
+                btn.addEventListener('click', () => {
+                    menu.classList.toggle('hidden');
+                });
+            }
+            
+            // Sync mobile currency selector with desktop
+            const mobileCurrency = document.getElementById('mobile-currency-selector');
+            const desktopCurrency = document.getElementById('currency-selector');
+            if(mobileCurrency && desktopCurrency) {
+                mobileCurrency.value = desktopCurrency.value || 'INR';
+                mobileCurrency.addEventListener('change', (e) => {
+                    desktopCurrency.value = e.target.value;
+                    desktopCurrency.dispatchEvent(new Event('change'));
+                });
+                
+                // Add event listener to update mobile when desktop changes
+                desktopCurrency.addEventListener('change', (e) => {
+                    mobileCurrency.value = e.target.value;
+                });
+            }
+        });
+    </script>
 
     <main class="flex-grow pt-16">
         <%- body %>

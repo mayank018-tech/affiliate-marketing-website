@@ -1,9 +1,11 @@
 <div class="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
     <div class="mb-8 flex items-center justify-between">
-        <h1 class="text-3xl font-bold text-slate-800 font-['Outfit']"><%= title %></h1>
-        <a href="/admin" class="text-slate-500 hover:text-slate-800 transition-colors">
-            <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
-        </a>
+        <div class="flex items-center space-x-4">
+            <a href="/admin" class="text-slate-500 hover:text-indigo-600 transition-colors bg-white w-10 h-10 rounded-full flex items-center justify-center shadow-sm">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <h1 class="text-3xl font-bold text-slate-800 font-['Outfit']"><%= title %></h1>
+        </div>
     </div>
 
     <div class="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden">
