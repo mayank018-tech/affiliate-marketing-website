@@ -12,8 +12,8 @@ const supabase = createClient(supabaseUrl || 'https://placeholder.supabase.co', 
   auth: {
     persistSession: false
   },
-  global: {
-    WebSocket
+  realtime: {
+    transport: WebSocket
   }
 });
 

@@ -3,8 +3,8 @@
 <section class="py-20 min-h-[calc(100vh-200px)] flex items-center relative overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-br from-indigo-50/50 via-white to-purple-50/50 -z-10"></div>
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div class="grid md:grid-cols-2 gap-16 items-start">
-            <div class="relative group">
+        <div class="grid md:grid-cols-2 gap-8 md:gap-16 items-start">
+            <div class="relative group mt-4 md:mt-0">
                 <% 
                    let urls = [];
                    if (product.image_urls) {
@@ -14,46 +14,46 @@
                    if (urls.length === 0) urls.push('https://via.placeholder.com/600x400');
                 %>
                 
-                <div class="absolute -inset-4 bg-gradient-to-r from-primary to-secondary rounded-[2.5rem] blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-700"></div>
-                <img id="main-product-image" src="<%= urls[0] %>" alt="<%= product.title %>" class="relative w-full rounded-[2rem] shadow-2xl object-cover aspect-video sm:aspect-square md:aspect-auto">
+                <div class="absolute -inset-2 md:-inset-4 bg-gradient-to-r from-primary to-secondary rounded-[2.5rem] blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-700"></div>
+                <img id="main-product-image" src="<%= urls[0] %>" alt="<%= product.title %>" class="relative z-20 w-full rounded-[1.5rem] md:rounded-[2rem] shadow-2xl object-contain bg-slate-50 aspect-[4/3] sm:aspect-square cursor-pointer hover:scale-[1.02] transition-transform duration-300 border-4 border-white">
                 <% if (product.badge) { %>
-                    <div class="absolute top-8 right-8 bg-gradient-to-r from-accent to-pink-500 text-white px-5 py-2 rounded-full text-sm font-bold uppercase tracking-widest shadow-xl shadow-pink-500/40 transform -rotate-2">
+                    <div class="absolute top-4 right-4 sm:top-8 sm:right-8 bg-gradient-to-r from-accent to-pink-500 text-white px-3 py-1 sm:px-5 sm:py-2 rounded-full text-xs sm:text-sm font-bold uppercase tracking-widest shadow-xl shadow-pink-500/40 transform -rotate-2 z-30">
                         <%= product.badge %>
                     </div>
                 <% } %>
                 
                 <% if (urls.length > 1) { %>
-                    <div class="flex gap-4 mt-6 overflow-x-auto pb-2 relative z-10">
+                    <div class="flex gap-3 mt-4 overflow-x-auto pb-2 relative z-20 scrollbar-hide px-1">
                         <% urls.forEach((url, i) => { %>
-                            <button type="button" class="flex-shrink-0 thumbnail-btn <%= i===0 ? 'ring-2 ring-primary ring-offset-2' : 'opacity-70 hover:opacity-100' %> rounded-xl overflow-hidden transition-all" data-img="<%= url %>">
-                                <img src="<%= url %>" class="w-20 h-20 object-cover">
+                            <button type="button" class="flex-shrink-0 thumbnail-btn <%= i===0 ? 'ring-2 ring-primary ring-offset-2 scale-105' : 'opacity-70 hover:opacity-100 hover:scale-105' %> rounded-xl overflow-hidden transition-all shadow-md bg-slate-50" data-img="<%= url %>">
+                                <img src="<%= url %>" class="w-16 h-16 sm:w-20 sm:h-20 object-contain">
                             </button>
                         <% }) %>
                     </div>
                 <% } %>
             </div>
             
-            <div class="space-y-8 relative">
-                <a href="/category/<%= product.category_slug %>" class="text-sm text-primary font-bold uppercase tracking-widest bg-indigo-50/80 backdrop-blur-sm border border-indigo-100 px-4 py-2 rounded-full inline-block hover:bg-indigo-100 transition-colors">
+            <div class="space-y-6 sm:space-y-8 relative px-2 sm:px-0">
+                <a href="/category/<%= product.category_slug %>" class="text-xs sm:text-sm text-primary font-bold uppercase tracking-widest bg-indigo-50/80 backdrop-blur-sm border border-indigo-100 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full inline-block hover:bg-indigo-100 transition-colors">
                     <%= product.category_name %>
                 </a>
                 
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight">
                     <%= product.title %>
                 </h1>
                 
-                <p class="text-lg md:text-xl text-slate-600 leading-relaxed font-light">
+                <p class="text-base sm:text-lg md:text-xl text-slate-600 leading-relaxed font-light">
                     <%= product.description %>
                 </p>
                 
-                <div class="pt-8 border-t border-slate-200/60">
-                    <div class="flex items-center gap-6 mb-10">
-                    <span class="text-4xl font-black text-slate-800 price-display" data-price="<%= product.price %>">$<%= product.price %></span>
+                <div class="pt-6 sm:pt-8 border-t border-slate-200/60">
+                    <div class="flex flex-wrap items-center gap-4 sm:gap-6 mb-8 sm:mb-10">
+                    <span class="text-3xl sm:text-4xl font-black text-slate-800 price-display" data-price="<%= product.price %>">$<%= product.price %></span>
                     <% if (product.badge) { %>
-                        <span class="bg-indigo-50 text-indigo-700 px-4 py-1.5 rounded-full text-sm font-bold"><%= product.badge %></span>
+                        <span class="bg-indigo-50 text-indigo-700 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-xs sm:text-sm font-bold"><%= product.badge %></span>
                     <% } %>
                 </div>    
-                    <a href="<%= product.affiliate_link %>" target="_blank" rel="noopener noreferrer" class="group relative inline-flex items-center justify-center px-10 py-5 text-lg font-bold text-white transition-all duration-300 bg-gray-900 rounded-2xl hover:bg-primary focus:outline-none focus:ring-4 focus:ring-primary/50 w-full sm:w-auto shadow-[0_10px_30px_rgba(0,0,0,0.2)] hover:shadow-[0_10px_40px_rgba(79,70,229,0.5)] overflow-hidden">
+                    <a href="<%= product.affiliate_link %>" target="_blank" rel="noopener noreferrer" class="group relative inline-flex items-center justify-center px-8 py-4 sm:px-10 sm:py-5 text-base sm:text-lg font-bold text-white transition-all duration-300 bg-gray-900 rounded-2xl hover:bg-primary focus:outline-none focus:ring-4 focus:ring-primary/50 w-full sm:w-auto shadow-[0_10px_30px_rgba(0,0,0,0.2)] hover:shadow-[0_10px_40px_rgba(79,70,229,0.5)] overflow-hidden">
                         <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-black"></span>
                         <span class="relative flex items-center">
                             <i class="fas fa-shopping-cart mr-3 group-hover:scale-110 transition-transform"></i> Get this Deal
@@ -65,11 +65,61 @@
     </div>
 </section>
 
+<!-- Lightbox Modal -->
+<div id="lightbox" class="fixed inset-0 z-[100] hidden bg-black/95 backdrop-blur-sm items-center justify-center opacity-0 transition-opacity duration-300">
+    <button id="lightbox-close" class="absolute top-6 right-6 text-white/70 hover:text-white transition-colors p-2 z-50">
+        <i class="fas fa-times text-3xl"></i>
+    </button>
+    <img id="lightbox-img" src="" alt="Full size product image" class="max-w-[95%] max-h-[90vh] object-contain rounded-lg shadow-2xl scale-95 transition-transform duration-300">
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const mainImg = document.getElementById('main-product-image');
         const thumbs = document.querySelectorAll('.thumbnail-btn');
         
+        // Lightbox elements
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.getElementById('lightbox-close');
+        
+        // Open Lightbox
+        mainImg.addEventListener('click', () => {
+            lightboxImg.src = mainImg.src;
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+            // Trigger animation after tiny delay
+            setTimeout(() => {
+                lightbox.classList.remove('opacity-0');
+                lightboxImg.classList.remove('scale-95');
+                lightboxImg.classList.add('scale-100');
+            }, 10);
+        });
+        
+        // Close Lightbox function
+        const closeLightbox = () => {
+            lightbox.classList.add('opacity-0');
+            lightboxImg.classList.remove('scale-100');
+            lightboxImg.classList.add('scale-95');
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+                lightbox.classList.remove('flex');
+            }, 300);
+        };
+        
+        // Close on button click or background click
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+                closeLightbox();
+            }
+        });
+        
+        // Thumbnail functionality
         thumbs.forEach(btn => {
             btn.addEventListener('click', () => {
                 // Update main image src
@@ -77,11 +127,11 @@
                 
                 // Update styling
                 thumbs.forEach(t => {
-                    t.classList.remove('ring-2', 'ring-primary', 'ring-offset-2');
-                    t.classList.add('opacity-70', 'hover:opacity-100');
+                    t.classList.remove('ring-2', 'ring-primary', 'ring-offset-2', 'scale-105');
+                    t.classList.add('opacity-70', 'hover:opacity-100', 'hover:scale-105');
                 });
-                btn.classList.add('ring-2', 'ring-primary', 'ring-offset-2');
-                btn.classList.remove('opacity-70', 'hover:opacity-100');
+                btn.classList.add('ring-2', 'ring-primary', 'ring-offset-2', 'scale-105');
+                btn.classList.remove('opacity-70', 'hover:opacity-100', 'hover:scale-105');
             });
         });
     });

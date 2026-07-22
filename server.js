@@ -192,7 +192,10 @@ app.get('/admin/categories/new', isAdmin, (req, res) => {
 
 app.post('/admin/categories', isAdmin, async (req, res) => {
     const { name, slug, icon } = req.body;
-    await supabase.from('categories').insert([{ name, slug, icon }]);
+    const { error } = await supabase.from('categories').insert([{ name, slug, icon }]);
+    if (error) {
+        console.error("SUPABASE ERROR CREATING CATEGORY:", error);
+    }
     res.redirect('/admin');
 });
 
