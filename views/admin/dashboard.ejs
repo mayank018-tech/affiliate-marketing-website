@@ -1,0 +1,51 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+    </div>
+
+    <!-- Products Section -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-12">
+        <div class="p-6 border-b border-gray-200 flex justify-between items-center">
+            <h2 class="text-xl font-bold text-gray-900">Products</h2>
+            <form action="/admin/products/new" method="GET">
+                <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors text-sm font-medium">
+                    <i class="fas fa-plus mr-2"></i> Add Product
+                </button>
+            </form>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50 text-gray-500 text-sm">
+                    <tr>
+                        <th class="px-6 py-4">Product</th>
+                        <th class="px-6 py-4">Category</th>
+                        <th class="px-6 py-4">Price</th>
+                        <th class="px-6 py-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    <% products.forEach(p => { %>
+                        <tr class="hover:bg-slate-50/50 transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center space-x-4">
+                                    <img src="<%= p.cover_image %>" alt="" class="w-12 h-12 rounded-lg object-cover ring-1 ring-gray-100">
+                                    <span class="font-semibold text-gray-900"><%= p.title %></span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-gray-600"><%= p.category_name %></td>
+                            <td class="px-6 py-4 font-medium text-gray-900">$<%= p.price %></td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center space-x-3">
+                                    <a href="/admin/products/<%= p.id %>/edit" class="text-indigo-600 hover:text-indigo-800 font-medium text-sm"><i class="fas fa-edit mr-1"></i> Edit</a>
+                                    <form action="/admin/products/<%= p.id %>/delete" method="POST" class="inline" onsubmit="return confirm('Delete this product?');">
+                                        <button type="submit" class="text-red-600 hover:text-red-800 font-medium text-sm"><i class="fas fa-trash mr-1"></i> Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

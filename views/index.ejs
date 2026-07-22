@@ -1,0 +1,87 @@
+<!-- Hero Section -->
+<section class="pt-24 pb-16 gradient-bg text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8 animate-slide-in">
+                <h1 class="text-5xl lg:text-6xl font-bold leading-tight">
+                    Discover Amazing
+                    <span class="bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">Products</span>
+                </h1>
+                <p class="text-xl text-gray-200 leading-relaxed">
+                    The ultimate affiliate product discovery platform. Browse, compare, and shop trending products across multiple categories with premium curation and exclusive deals.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-6 mt-10">
+                    <a href="#categories" class="bg-white/10 backdrop-blur-md border border-white/30 text-white px-10 py-4 rounded-full font-bold hover:bg-white hover:text-indigo-900 hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-all duration-300 transform hover:scale-105 text-center">
+                        Explore Categories
+                    </a>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-3xl blur-3xl"></div>
+                <img src="https://placehold.co/600x400/f8fafc/6366f1?text=Premium+Product+Discovery" alt="Hero Image" class="relative rounded-3xl shadow-2xl w-full h-auto">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Grid -->
+<section id="categories" class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Browse Categories</h2>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <% categories.forEach(category => { %>
+                <a href="/category/<%= category.slug %>" class="category-badge glass-card p-6 rounded-3xl block hover:bg-white/60 transition-all duration-300 group cursor-pointer relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform duration-300">
+                            <i class="<%= category.icon %> text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 text-lg group-hover:text-primary transition-colors"><%= category.name %></h3>
+                    </div>
+                </a>
+            <% }) %>
+        </div>
+    </div>
+</section>
+
+<!-- Trending Products -->
+<section id="trending" class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Trending Products</h2>
+        </div>
+        
+        <div class="product-grid mt-10">
+            <% products.forEach(product => { %>
+                <div class="product-card glass-card rounded-3xl overflow-hidden hover:bg-white/80 transition-all duration-500 border border-white/50 group relative">
+                    <a href="/product/<%= product.slug %>" class="relative block overflow-hidden">
+                        <img src="<%= product.cover_image %>" alt="<%= product.title %>" class="w-full h-56 object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                        <% if (product.badge) { %>
+                            <div class="absolute top-4 right-4 bg-gradient-to-r from-accent to-pink-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg shadow-pink-500/30">
+                                <%= product.badge %>
+                            </div>
+                        <% } %>
+                    </a>
+                    <div class="p-8">
+                        <a href="/category/<%= product.category_slug %>" class="text-xs text-secondary font-bold uppercase tracking-widest mb-3 inline-block hover:text-primary transition-colors">
+                            <%= product.category_name %>
+                        </a>
+                        <a href="/product/<%= product.slug %>">
+                            <h3 class="font-bold text-gray-900 text-xl mb-3 hover:text-primary transition-colors line-clamp-1"><%= product.title %></h3>
+                        </a>
+                        <p class="text-gray-500 text-sm mb-6 line-clamp-2 leading-relaxed"><%= product.description %></p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <span class="text-3xl font-extrabold text-slate-800 price-display" data-price="<%= product.price %>">$<%= product.price %></span>
+                            <a href="<%= product.affiliate_link %>" target="_blank" rel="noopener noreferrer" class="bg-gray-900 text-white px-5 py-2.5 rounded-xl hover:bg-primary hover:shadow-[0_0_15px_rgba(79,70,229,0.5)] transition-all duration-300 font-medium flex items-center">
+                                <i class="fas fa-shopping-cart mr-2 text-sm"></i> Deal
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</section>

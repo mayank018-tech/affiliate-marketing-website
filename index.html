@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusAffiliate | Premium Product Discovery Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#ec4899',
+                        dark: '#0f172a',
+                        light: '#f8fafc'
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'slide-in': 'slideIn 0.5s ease-out forwards'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' }
+                        },
+                        slideIn: {
+                            '0%': { opacity: 0, transform: 'translateY(20px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            backdrop-filter: blur(16px) saturate(180%);
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .category-badge:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .search-bar:focus-within {
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-gem text-white text-sm"></i>
+                    </div>
+                    <span class="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">NexusAffiliate</span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-700 hover:text-primary transition-colors">Discover</a>
+                    <a href="#" class="text-gray-700 hover:text-primary transition-colors">Categories</a>
+                    <a href="#" class="text-gray-700 hover:text-primary transition-colors">Trending</a>
+                    <a href="#" class="text-gray-700 hover:text-primary transition-colors">Deals</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Search products..." class="search-bar pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary transition-all">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    <button class="bg-primary text-white px-4 py-2 rounded-full hover:bg-indigo-600 transition-colors">
+                        <i class="fas fa-user mr-2"></i> Sign In
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-24 pb-16 gradient-bg text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8 animate-slide-in">
+                    <h1 class="text-5xl lg:text-6xl font-bold leading-tight">
+                        Discover Amazing
+                        <span class="bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">Products</span>
+                    </h1>
+                    <p class="text-xl text-gray-200 leading-relaxed">
+                        The ultimate affiliate product discovery platform. Browse, compare, and shop trending products across multiple categories with premium curation and exclusive deals.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button class="bg-white text-dark px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-all transform hover:scale-105">
+                            Start Exploring
+                        </button>
+                        <button class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-dark transition-all">
+                            View Categories
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-6 text-sm">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-users text-accent"></i>
+                            <span>1M+ Active Users</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-shopping-cart text-accent"></i>
+                            <span>50K+ Products</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-3xl blur-3xl"></div>
+                    <img src="https://placehold.co/600x400/f8fafc/6366f1?text=Premium+Product+Discovery" alt="Hero Image" class="relative rounded-3xl shadow-2xl w-full h-auto">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Grid -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Browse Categories</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Explore our curated collection of products across multiple categories, each featuring handpicked items with exclusive deals.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div class="category-badge glass-card p-6 rounded-2xl cursor-pointer hover:bg-white/20 transition-all">
+                    <div class="w-12 h-12 bg-gradient-to-r from-primary to-secondary rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-laptop text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Tech & Gadgets</h3>
+                    <p class="text-sm text-gray-600">Latest devices and accessories</p>
+                </div>
+                
+                <div class="category-badge glass-card p-6 rounded-2xl cursor-pointer hover:bg-white/20 transition-all">
+                    <div class="w-12 h-12 bg-gradient-to-r from-secondary to-accent rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-gamepad text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Gaming</h3>
+                    <p class="text-sm text-gray-600">Consoles, games & gear</p>
+                </div>
+                
+                <div class="category-badge glass-card p-6 rounded-2xl cursor-pointer hover:bg-white/20 transition-all">
+                    <div class="w-12 h-12 bg-gradient-to-r from-accent to-pink-500 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-tshirt text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Fashion</h3>
+                    <p class="text-sm text-gray-600">Trendy clothing & accessories</p>
+                </div>
+                
+                <div class="category-badge glass-card p-6 rounded-2xl cursor-pointer hover:bg-white/20 transition-all">
+                    <div class="w-12 h-12 bg-gradient-to-r from-green-400 to-blue-500 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-heart text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Beauty</h3>
+                    <p class="text-sm text-gray-600">Skincare & cosmetics</p>
+                </div>
+                
+                <div class="category-badge glass-card p-6 rounded-2xl cursor-pointer hover:bg-white/20 transition-all">
+                    <div class="w-12 h-12 bg-gradient-to-r from-orange-400 to-red-500 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-dumbbell text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Fitness</h3>
+                    <p class="text-sm text-gray-600">Equipment & accessories</p>
+                </div>
+                
+                <div class="category-badge glass-card p-6 rounded-2xl cursor-pointer hover:bg-white/20 transition-all">
+                    <div class="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-500 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-home text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Home Decor</h3>
+                    <p class="text-sm text-gray-600">Furniture & decor</p>
+                </div>
+                
+                <div class="category-badge glass-card p-6 rounded-2xl cursor-pointer hover:bg-white/20 transition-all">
+                    <div class="w-12 h-12 bg-gradient-to-r from-teal-400 to-blue-500 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-utensils text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Kitchen</h3>
+                    <p class="text-sm text-gray-600">Appliances & tools</p>
+                </div>
+                
+                <div class="category-badge glass-card p-6 rounded-2xl cursor-pointer hover:bg-white/20 transition-all">
+                    <div class="w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center mb-4">
+                        <i class="fas fa-book text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Study Essentials</h3>
+                    <p class="text-sm text-gray-600">Books & supplies</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trending Products -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Trending Products</h2>
+                    <p class="text-gray-600">Most popular items this week</p>
+                </div>
+                <button class="text-primary hover:text-indigo-600 font-medium flex items-center">
+                    View All <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+            
+            <div class="product-grid">
+                <div class="product-card glass-card rounded-2xl overflow-hidden hover:bg-white/20 transition-all">
+                    <div class="relative">
+                        <img src="https://placehold.co/300x200/e0e7ff/6366f1?text=Gaming+Keyboard" alt="Gaming Keyboard" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 right-4 bg-accent text-white px-2 py-1 rounded-full text-xs font-medium">
+                            New
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-gray-600 text-sm ml-2">(128)</span>
+                        </div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Mechanical Gaming Keyboard</h3>
+                        <p class="text-gray-600 text-sm mb-4">RGB backlit mechanical keyboard with customizable macros</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-primary">$89.99</span>
+                            <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors">
+                                <i class="fas fa-shopping-cart mr-2"></i> Shop
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card glass-card rounded-2xl overflow-hidden hover:bg-white/20 transition-all">
+                    <div class="relative">
+                        <img src="https://placehold.co/300x200/f3e8ff/8b5cf6?text=Wireless+Headphones" alt="Wireless Headphones" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 left-4 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                            Sale
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="text-gray-600 text-sm ml-2">(95)</span>
+                        </div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Wireless Noise Cancelling Headphones</h3>
+                        <p class="text-gray-600 text-sm mb-4">Premium audio experience with 30hr battery life</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-primary">$199.99</span>
+                            <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors">
+                                <i class="fas fa-shopping-cart mr-2"></i> Shop
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card glass-card rounded-2xl overflow-hidden hover:bg-white/20 transition-all">
+                    <div class="relative">
+                        <img src="https://placehold.co/300x200/fef3c7/f59e0b?text=Smart+Watch" alt="Smart Watch" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 right-4 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                            Hot
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-gray-600 text-sm ml-2">(215)</span>
+                        </div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Smart Fitness Tracker</h3>
+                        <p class="text-gray-600 text-sm mb-4">Health monitoring with GPS and waterproof design</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-primary">$129.99</span>
+                            <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors">
+                                <i class="fas fa-shopping-cart mr-2"></i> Shop
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card glass-card rounded-2xl overflow-hidden hover:bg-white/20 transition-all">
+                    <div class="relative">
+                        <img src="https://placehold.co/300x200/ecfdf5/10b981?text=Fitness+Gear" alt="Fitness Gear" class="w-full h-48 object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-gray-600 text-sm ml-2">(87)</span>
+                        </div>
+                        <h3 class="font-semibold text-gray-900 mb-2">Adjustable Dumbbell Set</h3>
+                        <p class="text-gray-600 text-sm mb-4">Space-saving adjustable weight system</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-primary">$159.99</span>
+                            <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors">
+                                <i class="fas fa-shopping-cart mr-2"></i> Shop
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 gradient-bg text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Why Choose NexusAffiliate?</h2>
+                <p class="text-gray-200 max-w-2xl mx-auto">Experience the future of affiliate shopping with our cutting-edge platform features.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-bolt text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">Lightning Fast</h3>
+                    <p class="text-sm text-gray-200">Optimized performance for instant product discovery</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shield-alt text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">Secure Deals</h3>
+                    <p class="text-sm text-gray-200">Verified products with secure checkout process</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-robot text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">AI-Powered</h3>
+                    <p class="text-sm text-gray-200">Personalized recommendations based on your preferences</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-percentage text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">Best Prices</h3>
+                    <p class="text-sm text-gray-200">Exclusive discounts and cashback rewards</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Ready to Transform Your Shopping Experience?</h2>
+            <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Join millions of users discovering amazing products with exclusive deals and personalized recommendations.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="bg-primary text-white px-8 py-4 rounded-full font-semibold hover:bg-indigo-600 transition-colors">
+                    Get Started Free
+                </button>
+                <button class="border-2 border-primary text-primary px-8 py-4 rounded-full font-semibold hover:bg-primary hover:text-white transition-colors">
+                    Schedule Demo
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-gem text-white text-sm"></i>
+                        </div>
+                        <span class="text-xl font-bold">NexusAffiliate</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">The premier affiliate product discovery platform for modern shoppers.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold mb-4">Categories</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Tech & Gadgets</a></li>
+                        <li><a href="#" class="hover:text-white">Gaming</a></li>
+                        <li><a href="#" class="hover:text-white">Fashion</a></li>
+                        <li><a href="#" class="hover:text-white">Beauty</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold mb-4">Company</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">About Us</a></li>
+                        <li><a href="#" class="hover:text-white">Careers</a></li>
+                        <li><a href="#" class="hover:text-white">Contact</a></li>
+                        <li><a href="#" class="hover:text-white">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold mb-4">Support</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white">Affiliate Program</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 NexusAffiliate. All rights reserved. Built with ❤️ for modern shoppers.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple animation on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'slideIn 0.6s ease-out forwards';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.category-badge, .product-card').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
