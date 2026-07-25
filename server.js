@@ -76,6 +76,8 @@ async function uploadToSupabase(file) {
             // keep the original uploadBuffer, uploadContentType, and finalFileName
         }
 
+        await ensureBucketExists();
+
         const { data, error } = await supabase
             .storage
             .from('product-images')
@@ -101,13 +103,47 @@ async function uploadToSupabase(file) {
     }
 }
 
+// Ensure the bucket exists and is public
+async function ensureBucketExists() {
+    try {
+        const { data: buckets, error: listError } = await supabase.storage.listBuckets();
+        if (listError) {
+            console.error('Error listing buckets:', listError);
+            return;
+        }
+        const exists = buckets.some(b => b.name === 'product-images');
+        if (!exists) {
+            console.log('Creating product-images bucket...');
+            const { error: createError } = await supabase.storage.createBucket('product-images', {
+                public: true
+            });
+            if (createError) {
+                console.error('Failed to create bucket:', createError);
+            } else {
+                console.log('product-images bucket created successfully as public!');
+            }
+        } else {
+            const targetBucket = buckets.find(b => b.name === 'product-images');
+            if (!targetBucket.public) {
+                console.log('Updating product-images bucket to be public...');
+                await supabase.storage.updateBucket('product-images', {
+                    public: true
+                });
+            }
+        }
+    } catch (e) {
+        console.error('Exception checking/creating bucket:', e);
+    }
+}
+
+
 // --- PUBLIC ROUTES ---
 app.get('/', async (req, res) => {
     try {
         const { data: categories } = await supabase.from('categories').select('*');
         const { data: products } = await supabase
             .from('products')
-            .select('*, categories(name)')
+            .select('*, categories(name, slug)')
             .limit(8);
         
         const formattedProducts = (products || []).map(p => {
@@ -115,6 +151,7 @@ app.get('/', async (req, res) => {
             if (p.image_urls) { try { urls = JSON.parse(p.image_urls); } catch(e) {} }
             p.cover_image = urls.length > 0 ? urls[0] : (p.image_url || 'https://via.placeholder.com/600x400');
             p.category_name = p.categories ? p.categories.name : null;
+            p.category_slug = p.categories ? p.categories.slug : null;
             return p;
         });
 
@@ -199,13 +236,14 @@ app.get('/admin', isAdmin, async (req, res) => {
     const { data: categories } = await supabase.from('categories').select('*');
     const { data: products } = await supabase
         .from('products')
-        .select('*, categories(name)');
+        .select('*, categories(name, slug)');
     
     const formattedProducts = (products || []).map(p => {
         let urls = [];
         if (p.image_urls) { try { urls = JSON.parse(p.image_urls); } catch(e) {} }
         p.cover_image = urls.length > 0 ? urls[0] : (p.image_url || 'https://via.placeholder.com/600x400');
         p.category_name = p.categories ? p.categories.name : null;
+        p.category_slug = p.categories ? p.categories.slug : null;
         return p;
     });
 
@@ -313,6 +351,7 @@ app.post('/admin/products/:id/delete', isAdmin, async (req, res) => {
     res.redirect('/admin');
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     console.log(`Server running on http://localhost:${PORT}`);
+    await ensureBucketExists();
 });
