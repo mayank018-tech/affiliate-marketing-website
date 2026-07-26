@@ -12,7 +12,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
+        // Check local storage or system preference and apply dark theme immediately
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -23,7 +31,7 @@
                         primary: '#4f46e5', // deeper indigo
                         secondary: '#7c3aed', // richer violet
                         accent: '#ec4899',
-                        dark: '#0f172a',
+                        dark: '#0B0F19',
                         light: '#f8fafc'
                     },
                     animation: {
@@ -84,9 +92,9 @@
         }
     </style>
 </head>
-<body class="bg-[#f0f4f8] min-h-screen flex flex-col text-slate-800">
+<body class="bg-[#f0f4f8] text-slate-800 dark:bg-[#0B0F19] dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full bg-white/70 backdrop-blur-xl z-50 border-b border-white/40 shadow-sm transition-all duration-300">
+    <nav class="fixed top-0 w-full bg-white/70 dark:bg-[#0B0F19]/70 backdrop-blur-xl z-50 border-b border-white/40 dark:border-slate-850/40 shadow-sm transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <a href="/" class="flex items-center space-x-2">
@@ -97,15 +105,15 @@
                 </a>
                 
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="/" class="text-slate-600 hover:text-indigo-600 font-medium transition-colors">Home</a>
-                    <a href="/#categories" class="text-slate-600 hover:text-indigo-600 font-medium transition-colors">Categories</a>
-                    <a href="/#trending" class="text-slate-600 hover:text-indigo-600 font-medium transition-colors">Trending</a>
+                    <a href="/" class="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">Home</a>
+                    <a href="/#categories" class="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">Categories</a>
+                    <a href="/#trending" class="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">Trending</a>
                 </div>
                 
                 <div class="hidden md:flex items-center space-x-4">
                     <!-- Currency Selector -->
                     <div class="relative">
-                        <select id="currency-selector" class="bg-white/10 text-slate-700 px-3 py-1 rounded border border-slate-200 outline-none focus:border-primary">
+                        <select id="currency-selector" class="bg-white/10 dark:bg-slate-800/40 text-slate-700 dark:text-slate-200 px-3 py-1 rounded border border-slate-200 dark:border-slate-750 outline-none focus:border-primary">
                             <option value="INR">INR (₹)</option>
                             <option value="USD">USD ($)</option>
                             <option value="EUR">EUR (€)</option>
@@ -113,10 +121,15 @@
                             <option value="CAD">CAD ($)</option>
                             <option value="AUD">AUD ($)</option>
                         </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-indigo-700">
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-indigo-700 dark:text-indigo-400">
                             <i class="fas fa-chevron-down text-xs"></i>
                         </div>
                     </div>
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus:outline-none" aria-label="Toggle Theme">
+                        <i id="theme-toggle-icon" class="fas fa-moon text-lg"></i>
+                    </button>
+
 
                     <% if (user && user.role === 'admin') { %>
                         <a href="/admin" class="text-indigo-600 font-bold hover:text-indigo-800 transition-colors ml-4">Dashboard</a>
@@ -140,15 +153,15 @@
         </div>
 
         <!-- Mobile Menu Panel -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 shadow-lg absolute w-full">
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-[#151B2C] border-t border-slate-100 dark:border-slate-800 shadow-lg absolute w-full transition-all duration-300">
             <div class="px-4 pt-2 pb-4 space-y-3 flex flex-col">
-                <a href="/" class="block px-3 py-2 text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-md font-medium">Home</a>
-                <a href="/#categories" class="block px-3 py-2 text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-md font-medium">Categories</a>
-                <a href="/#trending" class="block px-3 py-2 text-slate-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-md font-medium">Trending</a>
+                <a href="/" class="block px-3 py-2 text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-md font-medium">Home</a>
+                <a href="/#categories" class="block px-3 py-2 text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-md font-medium">Categories</a>
+                <a href="/#trending" class="block px-3 py-2 text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-md font-medium">Trending</a>
                 
-                <div class="px-3 py-2 border-t border-slate-100 mt-2">
+                <div class="px-3 py-2 border-t border-slate-100 dark:border-slate-800 mt-2">
                     <label class="block text-sm text-slate-500 mb-1">Currency</label>
-                    <select id="mobile-currency-selector" class="w-full bg-slate-50 text-slate-700 px-3 py-2 rounded border border-slate-200 outline-none">
+                    <select id="mobile-currency-selector" class="w-full bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 px-3 py-2 rounded border border-slate-200 dark:border-slate-700 outline-none">
                         <option value="INR">INR (₹)</option>
                         <option value="USD">USD ($)</option>
                         <option value="EUR">EUR (€)</option>
@@ -157,11 +170,18 @@
                         <option value="AUD">AUD ($)</option>
                     </select>
                 </div>
+
+                <div class="px-3 py-2 border-t border-slate-100 dark:border-slate-800 mt-2 flex justify-between items-center">
+                    <span class="text-sm font-medium text-slate-600 dark:text-slate-300">Dark Mode</span>
+                    <button id="mobile-theme-toggle" class="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus:outline-none">
+                        <i id="mobile-theme-toggle-icon" class="fas fa-moon text-lg"></i>
+                    </button>
+                </div>
                 
-                <div class="px-3 py-2 border-t border-slate-100 mt-2 flex flex-col gap-2">
+                <div class="px-3 py-2 border-t border-slate-100 dark:border-slate-800 mt-2 flex flex-col gap-2">
                     <% if (user && user.role === 'admin') { %>
                         <a href="/admin" class="w-full text-center bg-indigo-50 text-indigo-700 font-bold px-4 py-2 rounded-lg">Dashboard</a>
-                        <a href="/admin/logout" class="w-full text-center bg-red-50 text-red-600 font-bold px-4 py-2 rounded-lg">Logout</a>
+                        <a href="/admin/logout" class="w-full text-center bg-red-50 dark:bg-red-950/40 text-red-650 dark:text-red-400 font-bold px-4 py-2 rounded-lg">Logout</a>
                     <% } else { %>
                         <a href="/admin/login" class="w-full text-center bg-primary text-white font-bold px-4 py-2 rounded-lg">Admin Login</a>
                     <% } %>
@@ -181,6 +201,52 @@
                 });
             }
             
+            
+
+            // Dark Mode Toggle Logic
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeToggleIcon = document.getElementById('theme-toggle-icon');
+            const mobileThemeToggleBtn = document.getElementById('mobile-theme-toggle');
+            const mobileThemeToggleIcon = document.getElementById('mobile-theme-toggle-icon');
+
+            function updateToggleIcons(isDark) {
+                if (isDark) {
+                    if (themeToggleIcon) {
+                        themeToggleIcon.classList.remove('fa-moon');
+                        themeToggleIcon.classList.add('fa-sun');
+                    }
+                    if (mobileThemeToggleIcon) {
+                        mobileThemeToggleIcon.classList.remove('fa-moon');
+                        mobileThemeToggleIcon.classList.add('fa-sun');
+                    }
+                } else {
+                    if (themeToggleIcon) {
+                        themeToggleIcon.classList.remove('fa-sun');
+                        themeToggleIcon.classList.add('fa-moon');
+                    }
+                    if (mobileThemeToggleIcon) {
+                        mobileThemeToggleIcon.classList.remove('fa-sun');
+                        mobileThemeToggleIcon.classList.add('fa-moon');
+                    }
+                }
+            }
+
+            const isInitiallyDark = document.documentElement.classList.contains('dark');
+            updateToggleIcons(isInitiallyDark);
+
+            function toggleTheme() {
+                const isDark = document.documentElement.classList.toggle('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                updateToggleIcons(isDark);
+            }
+
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', toggleTheme);
+            }
+            if (mobileThemeToggleBtn) {
+                mobileThemeToggleBtn.addEventListener('click', toggleTheme);
+            }
+
             // Sync mobile currency selector with desktop
             const mobileCurrency = document.getElementById('mobile-currency-selector');
             const desktopCurrency = document.getElementById('currency-selector');

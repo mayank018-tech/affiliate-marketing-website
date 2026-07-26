@@ -155,7 +155,27 @@ app.get('/', async (req, res) => {
             return p;
         });
 
-        res.render('index', { categories: categories || [], products: formattedProducts, title: 'Home' });
+        const { data: slideshowProductsData } = await supabase
+            .from('products')
+            .select('*, categories(name, slug)')
+            .order('id', { ascending: false })
+            .limit(5);
+
+        const slideshowProducts = (slideshowProductsData || []).map(p => {
+            let urls = [];
+            if (p.image_urls) { try { urls = JSON.parse(p.image_urls); } catch(e) {} }
+            p.cover_image = urls.length > 0 ? urls[0] : (p.image_url || 'https://via.placeholder.com/600x400');
+            p.category_name = p.categories ? p.categories.name : null;
+            p.category_slug = p.categories ? p.categories.slug : null;
+            return p;
+        });
+
+        res.render('index', { 
+            categories: categories || [], 
+            products: formattedProducts, 
+            slideshowProducts,
+            title: 'Home' 
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send('Server Error');
