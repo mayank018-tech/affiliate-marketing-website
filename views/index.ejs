@@ -1,5 +1,5 @@
 <!-- Hero Slideshow Section -->
-<section class="relative w-full overflow-hidden bg-slate-950 pt-8 pb-12 transition-colors duration-300">
+<section class="relative w-full overflow-hidden bg-slate-50 dark:bg-slate-950 pt-8 pb-12 border-b border-slate-100 dark:border-slate-900 transition-colors duration-300">
     <% if (typeof slideshowProducts !== 'undefined' && slideshowProducts.length > 0) { %>
         <!-- Slideshow Wrapper -->
         <div id="hero-slideshow" class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[620px] sm:h-[560px] lg:h-[550px] xl:h-[600px] rounded-3xl overflow-hidden group">
@@ -9,23 +9,23 @@
                 <% slideshowProducts.forEach((product, index) => { %>
                     <div class="slide absolute inset-0 w-full h-full opacity-0 pointer-events-none transition-all duration-700 ease-in-out flex items-center <%= index === 0 ? 'opacity-100 pointer-events-auto z-10' : '' %>" data-index="<%= index %>">
                         <!-- Blurred Background Image for depth -->
-                        <div class="absolute inset-0 bg-cover bg-center filter blur-3xl opacity-20 dark:opacity-30 scale-105" style="background-image: url('<%= product.cover_image %>');"></div>
+                        <div class="absolute inset-0 bg-cover bg-center filter blur-3xl opacity-10 dark:opacity-25 scale-105" style="background-image: url('<%= product.cover_image %>');"></div>
                         <!-- Subtle overlay gradient -->
-                        <div class="absolute inset-0 bg-gradient-to-b lg:bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent"></div>
+                        <div class="absolute inset-0 bg-gradient-to-b lg:bg-gradient-to-r from-slate-50 via-slate-50/80 to-transparent dark:from-slate-950 dark:via-slate-950/80 dark:to-transparent"></div>
                         
                         <!-- Slide Content Grid -->
                         <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center justify-center w-full h-full px-4 sm:px-8 md:px-16 py-8">
                             
-                            <!-- Product Image Showcase (Stacked first on mobile, right on desktop) -->
+                            <!-- Product Image Showcase -->
                             <div class="order-1 lg:order-2 lg:col-span-5 flex justify-center relative">
-                                <div class="absolute inset-0 bg-gradient-to-tr from-primary/30 to-secondary/30 rounded-3xl blur-2xl animate-pulse-slow"></div>
+                                <div class="absolute inset-0 bg-gradient-to-tr from-primary/20 to-secondary/20 dark:from-primary/30 dark:to-secondary/30 rounded-3xl blur-2xl animate-pulse-slow"></div>
                                 <div class="relative glass-card p-2 sm:p-4 rounded-3xl border border-white/20 shadow-2xl hover:scale-[1.02] transition-transform duration-500">
                                     <img src="<%= product.cover_image %>" alt="<%= product.title %>" class="w-[150px] h-[150px] sm:w-[200px] sm:h-[200px] md:w-[240px] md:h-[240px] lg:w-[350px] lg:h-[350px] xl:w-[380px] xl:h-[380px] object-cover rounded-2xl shadow-lg">
                                 </div>
                             </div>
 
-                            <!-- Product Details (Stacked second on mobile, left on desktop) -->
-                            <div class="order-2 lg:order-1 lg:col-span-7 space-y-4 lg:space-y-6 text-white text-center lg:text-left flex flex-col items-center lg:items-start">
+                            <!-- Product Details -->
+                            <div class="order-2 lg:order-1 lg:col-span-7 space-y-4 lg:space-y-6 text-slate-900 dark:text-white text-center lg:text-left flex flex-col items-center lg:items-start">
                                 <% if (product.badge) { %>
                                     <span class="inline-block bg-gradient-to-r from-accent to-pink-500 text-white px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg shadow-pink-500/30">
                                         <%= product.badge %>
@@ -33,23 +33,23 @@
                                 <% } %>
                                 
                                 <div class="space-y-2">
-                                    <span class="text-xs sm:text-sm font-bold text-secondary tracking-widest uppercase block"><%= product.category_name %></span>
-                                    <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-extrabold tracking-tight leading-tight line-clamp-2 animate-slide-in">
+                                    <span class="text-xs sm:text-sm font-bold text-secondary dark:text-indigo-400 tracking-widest uppercase block"><%= product.category_name %></span>
+                                    <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-extrabold tracking-tight leading-tight line-clamp-2">
                                         <%= product.title %>
                                     </h2>
                                 </div>
                                 
-                                <p class="text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed line-clamp-2 md:line-clamp-3 max-w-xl">
+                                <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed line-clamp-2 md:line-clamp-3 max-w-xl">
                                     <%= product.description %>
                                 </p>
                                 
                                 <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 pt-2 lg:pt-4 w-full sm:w-auto">
                                     <div class="flex flex-col text-center sm:text-left">
-                                        <span class="text-[10px] sm:text-xs text-slate-400 uppercase tracking-wider">Best Deal</span>
-                                        <span class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white price-display" data-price="<%= product.price %>">$<%= product.price %></span>
+                                        <span class="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Best Deal</span>
+                                        <span class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white price-display" data-price="<%= product.price %>">$<%= product.price %></span>
                                     </div>
                                     <div class="flex gap-3 w-full sm:w-auto justify-center sm:justify-start">
-                                        <a href="/product/<%= product.slug %>" class="bg-white/10 hover:bg-white/20 text-white px-5 sm:px-8 py-2.5 sm:py-3.5 rounded-full font-bold border border-white/20 hover:border-white/40 backdrop-blur-md transition-all duration-300 text-center text-xs sm:text-sm flex-1 sm:flex-none">
+                                        <a href="/product/<%= product.slug %>" class="bg-slate-200/60 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 text-slate-800 dark:text-white px-5 sm:px-8 py-2.5 sm:py-3.5 rounded-full font-bold border border-slate-350/50 dark:border-white/20 backdrop-blur-md transition-all duration-300 text-center text-xs sm:text-sm flex-1 sm:flex-none">
                                             Details
                                         </a>
                                         <a href="<%= product.affiliate_link %>" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-primary to-secondary hover:from-indigo-600 hover:to-violet-700 text-white px-5 sm:px-8 py-2.5 sm:py-3.5 rounded-full font-bold shadow-lg shadow-primary/30 transition-all duration-300 flex items-center justify-center text-xs sm:text-sm flex-1 sm:flex-none">
@@ -75,7 +75,7 @@
             <!-- Slide Indicators/Dots -->
             <div class="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
                 <% slideshowProducts.forEach((_, index) => { %>
-                    <button class="slide-dot w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-white/30 hover:bg-white/60 transition-all duration-300 cursor-pointer <%= index === 0 ? 'bg-white w-5 sm:w-6' : '' %>" data-index="<%= index %>"></button>
+                    <button class="slide-dot w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-slate-400/50 dark:bg-white/30 hover:bg-slate-400 dark:hover:bg-white/60 transition-all duration-300 cursor-pointer <%= index === 0 ? 'bg-slate-900 dark:bg-white w-5 sm:w-6' : '' %>" data-index="<%= index %>"></button>
                 <% }) %>
             </div>
 
@@ -102,8 +102,8 @@
                         slide.classList.add('opacity-0', 'pointer-events-none');
                     });
                     dots.forEach(dot => {
-                        dot.classList.remove('bg-white', 'w-6');
-                        dot.classList.add('bg-white/30');
+                        dot.classList.remove('bg-slate-900', 'bg-white', 'w-5', 'w-6');
+                        dot.classList.add('bg-slate-400/50', 'dark:bg-white/30');
                     });
                     
                     currentSlide = (index + slides.length) % slides.length;
@@ -111,8 +111,14 @@
                     slides[currentSlide].classList.remove('opacity-0', 'pointer-events-none');
                     slides[currentSlide].classList.add('opacity-100', 'pointer-events-auto', 'z-10');
                     
-                    dots[currentSlide].classList.remove('bg-white/30');
-                    dots[currentSlide].classList.add('bg-white', 'w-6');
+                    const activeDot = dots[currentSlide];
+                    activeDot.classList.remove('bg-slate-400/50', 'dark:bg-white/30');
+                    // Choose class based on active theme
+                    if (document.documentElement.classList.contains('dark')) {
+                        activeDot.classList.add('bg-white', 'w-6');
+                    } else {
+                        activeDot.classList.add('bg-slate-900', 'w-5');
+                    }
                 }
                 
                 function nextSlide() {
@@ -159,16 +165,51 @@
                     container.addEventListener('mouseleave', startAutoPlay);
                 }
                 
+                // --- Mobile Touch Swipe Support ---
+                let touchStartX = 0;
+                let touchEndX = 0;
+                
+                if (container) {
+                    container.addEventListener('touchstart', (e) => {
+                        touchStartX = e.changedTouches[0].screenX;
+                    }, { passive: true });
+                    
+                    container.addEventListener('touchend', (e) => {
+                        touchEndX = e.changedTouches[0].screenX;
+                        handleSwipe();
+                    }, { passive: true });
+                }
+                
+                function handleSwipe() {
+                    const threshold = 55; // swipe distance threshold
+                    const swipeDistance = touchEndX - touchStartX;
+                    
+                    if (Math.abs(swipeDistance) > threshold) {
+                        if (swipeDistance < 0) {
+                            nextSlide();
+                        } else {
+                            prevSlide();
+                        }
+                        startAutoPlay();
+                    }
+                }
+
+                // Listen to dark mode changes to update dot indicator styling dynamically
+                const observer = new MutationObserver(() => {
+                    showSlide(currentSlide);
+                });
+                observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+                
                 startAutoPlay();
             });
         </script>
     <% } else { %>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[400px] flex items-center justify-center text-center">
             <div class="space-y-6">
-                <h1 class="text-5xl font-bold text-white leading-tight">
+                <h1 class="text-5xl font-bold text-slate-800 dark:text-white leading-tight">
                     Discover Amazing <span class="bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">Products</span>
                 </h1>
-                <p class="text-xl text-slate-300 max-w-xl mx-auto">
+                <p class="text-xl text-slate-600 dark:text-slate-300 max-w-xl mx-auto">
                     Browse and shop premium affiliate products across multiple categories.
                 </p>
             </div>
