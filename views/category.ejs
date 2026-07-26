@@ -1,19 +1,19 @@
 <!-- Category Products -->
-<section class="py-16 bg-white dark:bg-slate-950/20 transition-colors duration-300">
+<section class="py-16 bg-white dark:bg-[#1F150C] transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center space-x-4 mb-8">
-            <div class="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-2xl flex items-center justify-center">
-                <i class="<%= category.icon %> text-white text-2xl"></i>
+            <div class="w-16 h-16 bg-gradient-to-r from-[#412D15] to-[#7c3aed] dark:from-[#E1DCC9] dark:to-[#412D15] rounded-2xl flex items-center justify-center">
+                <i class="<%= category.icon %> text-white dark:text-[#1F150C] text-2xl"></i>
             </div>
-            <h1 class="text-4xl font-bold text-gray-900 dark:text-white"><%= category.name %></h1>
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-[#E1DCC9]"><%= category.name %></h1>
         </div>
         
         <% if (products.length === 0) { %>
-            <p class="text-gray-600 dark:text-slate-400">No products found in this category.</p>
+            <p class="text-gray-650 dark:text-slate-400">No products found in this category.</p>
         <% } else { %>
             <div class="product-grid">
                 <% products.forEach(product => { %>
-                    <div class="product-card glass-card rounded-2xl overflow-hidden hover:bg-white dark:hover:bg-slate-900/60 transition-all border border-gray-200 dark:border-slate-800/40 bg-white">
+                    <div class="product-card glass-card rounded-2xl overflow-hidden hover:bg-white dark:hover:bg-[#412D15]/45 transition-all border border-gray-200 dark:border-[#412D15]/40 bg-white">
                         <a href="/product/<%= product.slug %>" class="relative block">
                             <img src="<%= product.cover_image %>" alt="<%= product.title %>" class="w-full h-48 object-cover">
                             <% if (product.badge) { %>
@@ -24,7 +24,7 @@
                         </a>
                         <div class="p-6">
                             <a href="/product/<%= product.slug %>">
-                                <h3 class="font-semibold text-gray-900 dark:text-white mb-2 hover:text-primary dark:hover:text-indigo-400 transition-colors"><%= product.title %></h3>
+                                <h3 class="font-semibold text-gray-900 dark:text-[#E1DCC9] mb-2 hover:text-primary dark:hover:text-[#E1DCC9] transition-colors"><%= product.title %></h3>
                             </a>
                             <p class="text-gray-600 dark:text-slate-350 text-sm mb-4 line-clamp-2"><%= product.description %></p>
                             <div class="flex justify-between items-center mt-auto">

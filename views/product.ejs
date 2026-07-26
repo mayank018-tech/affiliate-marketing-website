@@ -1,6 +1,6 @@
 <!-- Product Detail -->
 <section class="py-20 min-h-[calc(100vh-200px)] flex items-center relative overflow-hidden transition-colors duration-300">
-    <div class="absolute inset-0 bg-gradient-to-br from-indigo-50/50 via-white to-purple-50/50 dark:from-slate-900/40 dark:via-slate-950 dark:to-slate-900/40 -z-10"></div>
+    <div class="absolute inset-0 bg-gradient-to-br from-indigo-50/50 via-white to-purple-50/50 dark:from-[#1F150C] dark:via-[#000000]/60 dark:to-[#1F150C] -z-10"></div>
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div class="grid md:grid-cols-2 gap-8 md:gap-16 items-start">
             <div class="relative group mt-4 md:mt-0">
@@ -14,7 +14,7 @@
                 %>
                 
                 <div class="absolute -inset-2 md:-inset-4 bg-gradient-to-r from-primary to-secondary rounded-[2.5rem] blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-700"></div>
-                <img id="main-product-image" src="<%= urls[0] %>" alt="<%= product.title %>" class="relative z-20 w-full rounded-[1.5rem] md:rounded-[2rem] shadow-2xl object-contain bg-slate-50 dark:bg-slate-900 aspect-[4/3] sm:aspect-square cursor-pointer hover:scale-[1.02] transition-transform duration-300 border-4 border-white dark:border-slate-800">
+                <img id="main-product-image" src="<%= urls[0] %>" alt="<%= product.title %>" class="relative z-20 w-full rounded-[1.5rem] md:rounded-[2rem] shadow-2xl object-contain bg-slate-50 dark:bg-[#412D15]/30 aspect-[4/3] sm:aspect-square cursor-pointer hover:scale-[1.02] transition-transform duration-300 border-4 border-white dark:border-[#412D15]/40">
                 <% if (product.badge) { %>
                     <div class="absolute top-4 right-4 sm:top-8 sm:right-8 bg-gradient-to-r from-accent to-pink-500 text-white px-3 py-1 sm:px-5 sm:py-2 rounded-full text-xs sm:text-sm font-bold uppercase tracking-widest shadow-xl shadow-pink-500/40 transform -rotate-2 z-30">
                         <%= product.badge %>
@@ -24,7 +24,7 @@
                 <% if (urls.length > 1) { %>
                     <div class="flex gap-3 mt-4 overflow-x-auto pb-2 relative z-20 scrollbar-hide px-1">
                         <% urls.forEach((url, i) => { %>
-                            <button type="button" class="flex-shrink-0 thumbnail-btn <%= i===0 ? 'ring-2 ring-primary ring-offset-2 scale-105' : 'opacity-70 hover:opacity-100 hover:scale-105' %> rounded-xl overflow-hidden transition-all shadow-md bg-slate-50 dark:bg-slate-900 dark:ring-offset-slate-950" data-img="<%= url %>">
+                            <button type="button" class="flex-shrink-0 thumbnail-btn <%= i===0 ? 'ring-2 ring-primary ring-offset-2 scale-105' : 'opacity-70 hover:opacity-100 hover:scale-105' %> rounded-xl overflow-hidden transition-all shadow-md bg-slate-50 dark:bg-[#412D15]/30 dark:ring-offset-[#1F150C]" data-img="<%= url %>">
                                 <img src="<%= url %>" class="w-16 h-16 sm:w-20 sm:h-20 object-contain">
                             </button>
                         <% }) %>
@@ -33,11 +33,11 @@
             </div>
             
             <div class="space-y-6 sm:space-y-8 relative px-2 sm:px-0">
-                <a href="/category/<%= product.category_slug %>" class="text-xs sm:text-sm text-primary dark:text-indigo-400 font-bold uppercase tracking-widest bg-indigo-50/80 dark:bg-indigo-950/40 backdrop-blur-sm border border-indigo-100 dark:border-indigo-900/40 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full inline-block hover:bg-indigo-100 dark:hover:bg-indigo-900/80 transition-colors">
+                <a href="/category/<%= product.category_slug %>" class="text-xs sm:text-sm text-primary dark:text-[#E1DCC9] font-bold uppercase tracking-widest bg-indigo-50/80 dark:bg-[#412D15]/55 backdrop-blur-sm border border-indigo-100 dark:border-[#412D15]/60 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full inline-block hover:bg-indigo-100 dark:hover:bg-[#412D15]/80 transition-colors">
                     <%= product.category_name %>
                 </a>
                 
-                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-[#E1DCC9] leading-tight tracking-tight">
                     <%= product.title %>
                 </h1>
                 
@@ -45,14 +45,14 @@
                     <%= product.description %>
                 </p>
                 
-                <div class="pt-6 sm:pt-8 border-t border-slate-200/60 dark:border-slate-800">
+                <div class="pt-6 sm:pt-8 border-t border-slate-200/60 dark:border-[#412D15]/40">
                     <div class="flex flex-wrap items-center gap-4 sm:gap-6 mb-8 sm:mb-10">
                         <span class="text-3xl sm:text-4xl font-black text-slate-800 dark:text-white price-display" data-price="<%= product.price %>">$<%= product.price %></span>
                         <% if (product.badge) { %>
-                            <span class="bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-400 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-xs sm:text-sm font-bold"><%= product.badge %></span>
+                            <span class="bg-indigo-50 dark:bg-[#412D15]/55 text-indigo-700 dark:text-[#E1DCC9] px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-xs sm:text-sm font-bold"><%= product.badge %></span>
                         <% } %>
                     </div>    
-                    <a href="<%= product.affiliate_link %>" target="_blank" rel="noopener noreferrer" class="group relative inline-flex items-center justify-center px-8 py-4 sm:px-10 sm:py-5 text-base sm:text-lg font-bold text-white transition-all duration-300 bg-gray-900 dark:bg-slate-800 dark:hover:bg-primary rounded-2xl hover:bg-primary focus:outline-none focus:ring-4 focus:ring-primary/50 w-full sm:w-auto shadow-[0_10px_30px_rgba(0,0,0,0.2)] hover:shadow-[0_10px_40px_rgba(79,70,229,0.5)] overflow-hidden">
+                    <a href="<%= product.affiliate_link %>" target="_blank" rel="noopener noreferrer" class="group relative inline-flex items-center justify-center px-8 py-4 sm:px-10 sm:py-5 text-base sm:text-lg font-bold text-white transition-all duration-300 bg-gray-900 dark:bg-[#412D15] dark:hover:bg-primary rounded-2xl hover:bg-primary focus:outline-none focus:ring-4 focus:ring-primary/50 w-full sm:w-auto shadow-[0_10px_30px_rgba(0,0,0,0.2)] hover:shadow-[0_10px_40px_rgba(79,70,229,0.5)] overflow-hidden border dark:border-[#412D15]/60">
                         <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-black"></span>
                         <span class="relative flex items-center">
                             <i class="fas fa-shopping-cart mr-3 group-hover:scale-110 transition-transform"></i> Get this Deal

@@ -1,59 +1,59 @@
 <!-- Hero Slideshow Section -->
-<section class="relative w-full overflow-hidden bg-slate-50 dark:bg-slate-950 pt-8 pb-12 border-b border-slate-100 dark:border-slate-900 transition-colors duration-300">
+<section class="relative w-full overflow-hidden bg-slate-50 dark:bg-[#1F150C] pt-6 pb-10 border-b border-slate-100 dark:border-[#412D15]/40 transition-colors duration-300">
     <% if (typeof slideshowProducts !== 'undefined' && slideshowProducts.length > 0) { %>
         <!-- Slideshow Wrapper -->
-        <div id="hero-slideshow" class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[620px] sm:h-[560px] lg:h-[550px] xl:h-[600px] rounded-3xl overflow-hidden group">
+        <div id="hero-slideshow" class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[480px] sm:h-[380px] md:h-[380px] lg:h-[390px] xl:h-[410px] rounded-3xl overflow-hidden group">
             
             <!-- Slides Container -->
             <div class="relative w-full h-full">
                 <% slideshowProducts.forEach((product, index) => { %>
                     <div class="slide absolute inset-0 w-full h-full opacity-0 pointer-events-none transition-all duration-700 ease-in-out flex items-center <%= index === 0 ? 'opacity-100 pointer-events-auto z-10' : '' %>" data-index="<%= index %>">
                         <!-- Blurred Background Image for depth -->
-                        <div class="absolute inset-0 bg-cover bg-center filter blur-3xl opacity-10 dark:opacity-25 scale-105" style="background-image: url('<%= product.cover_image %>');"></div>
+                        <div class="absolute inset-0 bg-cover bg-center filter blur-3xl opacity-10 dark:opacity-20 scale-105" style="background-image: url('<%= product.cover_image %>');"></div>
                         <!-- Subtle overlay gradient -->
-                        <div class="absolute inset-0 bg-gradient-to-b lg:bg-gradient-to-r from-slate-50 via-slate-50/80 to-transparent dark:from-slate-950 dark:via-slate-950/80 dark:to-transparent"></div>
+                        <div class="absolute inset-0 bg-gradient-to-b lg:bg-gradient-to-r from-slate-50 via-slate-50/80 to-transparent dark:from-[#1F150C] dark:via-[#1F150C]/90 dark:to-transparent"></div>
                         
                         <!-- Slide Content Grid -->
-                        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center justify-center w-full h-full px-4 sm:px-8 md:px-16 py-8">
+                        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-8 items-center justify-center w-full h-full px-4 sm:px-8 md:px-12 py-4">
                             
                             <!-- Product Image Showcase -->
                             <div class="order-1 lg:order-2 lg:col-span-5 flex justify-center relative">
-                                <div class="absolute inset-0 bg-gradient-to-tr from-primary/20 to-secondary/20 dark:from-primary/30 dark:to-secondary/30 rounded-3xl blur-2xl animate-pulse-slow"></div>
-                                <div class="relative glass-card p-2 sm:p-4 rounded-3xl border border-white/20 shadow-2xl hover:scale-[1.02] transition-transform duration-500">
-                                    <img src="<%= product.cover_image %>" alt="<%= product.title %>" class="w-[150px] h-[150px] sm:w-[200px] sm:h-[200px] md:w-[240px] md:h-[240px] lg:w-[350px] lg:h-[350px] xl:w-[380px] xl:h-[380px] object-cover rounded-2xl shadow-lg">
+                                <div class="absolute inset-0 bg-gradient-to-tr from-primary/20 to-secondary/20 dark:from-primary/15 dark:to-secondary/15 rounded-3xl blur-2xl animate-pulse-slow"></div>
+                                <div class="relative glass-card p-2 rounded-3xl border border-white/20 shadow-xl hover:scale-[1.01] transition-transform duration-500">
+                                    <img src="<%= product.cover_image %>" alt="<%= product.title %>" class="w-[120px] h-[120px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] lg:w-[260px] lg:h-[260px] xl:w-[280px] xl:h-[280px] object-cover rounded-2xl shadow-md">
                                 </div>
                             </div>
 
                             <!-- Product Details -->
-                            <div class="order-2 lg:order-1 lg:col-span-7 space-y-4 lg:space-y-6 text-slate-900 dark:text-white text-center lg:text-left flex flex-col items-center lg:items-start">
+                            <div class="order-2 lg:order-1 lg:col-span-7 space-y-3 lg:space-y-4 text-slate-900 dark:text-[#E1DCC9] text-center lg:text-left flex flex-col items-center lg:items-start">
                                 <% if (product.badge) { %>
-                                    <span class="inline-block bg-gradient-to-r from-accent to-pink-500 text-white px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg shadow-pink-500/30">
+                                    <span class="inline-block bg-gradient-to-r from-accent to-pink-500 text-white px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-md shadow-pink-500/20">
                                         <%= product.badge %>
                                     </span>
                                 <% } %>
                                 
-                                <div class="space-y-2">
-                                    <span class="text-xs sm:text-sm font-bold text-secondary dark:text-indigo-400 tracking-widest uppercase block"><%= product.category_name %></span>
-                                    <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-extrabold tracking-tight leading-tight line-clamp-2">
+                                <div class="space-y-1">
+                                    <span class="text-[10px] sm:text-xs font-bold text-secondary dark:text-indigo-400 tracking-widest uppercase block"><%= product.category_name %></span>
+                                    <h2 class="text-lg sm:text-xl md:text-2xl lg:text-4xl font-extrabold tracking-tight leading-snug line-clamp-1">
                                         <%= product.title %>
                                     </h2>
                                 </div>
                                 
-                                <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed line-clamp-2 md:line-clamp-3 max-w-xl">
+                                <p class="text-slate-650 dark:text-slate-300 text-xs sm:text-sm leading-relaxed line-clamp-2 md:line-clamp-3 max-w-xl">
                                     <%= product.description %>
                                 </p>
                                 
-                                <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 pt-2 lg:pt-4 w-full sm:w-auto">
+                                <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 pt-1 lg:pt-3 w-full sm:w-auto">
                                     <div class="flex flex-col text-center sm:text-left">
-                                        <span class="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Best Deal</span>
-                                        <span class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white price-display" data-price="<%= product.price %>">$<%= product.price %></span>
+                                        <span class="text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider">Best Deal</span>
+                                        <span class="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white price-display" data-price="<%= product.price %>">$<%= product.price %></span>
                                     </div>
-                                    <div class="flex gap-3 w-full sm:w-auto justify-center sm:justify-start">
-                                        <a href="/product/<%= product.slug %>" class="bg-slate-200/60 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 text-slate-800 dark:text-white px-5 sm:px-8 py-2.5 sm:py-3.5 rounded-full font-bold border border-slate-350/50 dark:border-white/20 backdrop-blur-md transition-all duration-300 text-center text-xs sm:text-sm flex-1 sm:flex-none">
+                                    <div class="flex gap-2.5 w-full sm:w-auto justify-center sm:justify-start">
+                                        <a href="/product/<%= product.slug %>" class="bg-slate-200/60 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/20 text-slate-800 dark:text-[#E1DCC9] px-4 sm:px-6 py-2 rounded-full font-bold border border-slate-350/50 dark:border-white/10 backdrop-blur-md transition-all duration-300 text-center text-xs flex-1 sm:flex-none">
                                             Details
                                         </a>
-                                        <a href="<%= product.affiliate_link %>" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-primary to-secondary hover:from-indigo-600 hover:to-violet-700 text-white px-5 sm:px-8 py-2.5 sm:py-3.5 rounded-full font-bold shadow-lg shadow-primary/30 transition-all duration-300 flex items-center justify-center text-xs sm:text-sm flex-1 sm:flex-none">
-                                            <i class="fas fa-shopping-cart mr-2"></i> Get Deal
+                                        <a href="<%= product.affiliate_link %>" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-primary to-secondary hover:from-indigo-600 hover:to-violet-700 text-white px-4 sm:px-6 py-2 rounded-full font-bold shadow-md shadow-primary/20 transition-all duration-300 flex items-center justify-center text-xs flex-1 sm:flex-none">
+                                            <i class="fas fa-shopping-cart mr-1.5"></i> Get Deal
                                         </a>
                                     </div>
                                 </div>
@@ -65,17 +65,17 @@
             </div>
 
             <!-- Navigation Controls -->
-            <button id="prev-slide" class="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-slate-900/60 hover:bg-slate-900 border border-white/10 hover:border-white/20 text-white items-center justify-center backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 z-20 cursor-pointer shadow-lg hover:scale-105">
-                <i class="fas fa-chevron-left text-lg"></i>
+            <button id="prev-slide" class="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-slate-900/60 hover:bg-slate-900 border border-white/10 hover:border-white/20 text-white items-center justify-center backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 z-20 cursor-pointer shadow-md hover:scale-105">
+                <i class="fas fa-chevron-left text-sm"></i>
             </button>
-            <button id="next-slide" class="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-slate-900/60 hover:bg-slate-900 border border-white/10 hover:border-white/20 text-white items-center justify-center backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 z-20 cursor-pointer shadow-lg hover:scale-105">
-                <i class="fas fa-chevron-right text-lg"></i>
+            <button id="next-slide" class="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-slate-900/60 hover:bg-slate-900 border border-white/10 hover:border-white/20 text-white items-center justify-center backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 z-20 cursor-pointer shadow-md hover:scale-105">
+                <i class="fas fa-chevron-right text-sm"></i>
             </button>
 
             <!-- Slide Indicators/Dots -->
-            <div class="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
+            <div class="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-20">
                 <% slideshowProducts.forEach((_, index) => { %>
-                    <button class="slide-dot w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-slate-400/50 dark:bg-white/30 hover:bg-slate-400 dark:hover:bg-white/60 transition-all duration-300 cursor-pointer <%= index === 0 ? 'bg-slate-900 dark:bg-white w-5 sm:w-6' : '' %>" data-index="<%= index %>"></button>
+                    <button class="slide-dot w-2 h-2 sm:w-2 sm:h-2 rounded-full bg-slate-400/50 dark:bg-[#E1DCC9]/30 hover:bg-slate-400 dark:hover:bg-[#E1DCC9]/60 transition-all duration-300 cursor-pointer <%= index === 0 ? 'bg-slate-900 dark:bg-[#E1DCC9] w-5' : '' %>" data-index="<%= index %>"></button>
                 <% }) %>
             </div>
 
@@ -102,8 +102,8 @@
                         slide.classList.add('opacity-0', 'pointer-events-none');
                     });
                     dots.forEach(dot => {
-                        dot.classList.remove('bg-slate-900', 'bg-white', 'w-5', 'w-6');
-                        dot.classList.add('bg-slate-400/50', 'dark:bg-white/30');
+                        dot.classList.remove('bg-slate-900', 'bg-[#E1DCC9]', 'w-5', 'w-6');
+                        dot.classList.add('bg-slate-400/50', 'dark:bg-[#E1DCC9]/30');
                     });
                     
                     currentSlide = (index + slides.length) % slides.length;
@@ -112,10 +112,9 @@
                     slides[currentSlide].classList.add('opacity-100', 'pointer-events-auto', 'z-10');
                     
                     const activeDot = dots[currentSlide];
-                    activeDot.classList.remove('bg-slate-400/50', 'dark:bg-white/30');
-                    // Choose class based on active theme
+                    activeDot.classList.remove('bg-slate-400/50', 'dark:bg-[#E1DCC9]/30');
                     if (document.documentElement.classList.contains('dark')) {
-                        activeDot.classList.add('bg-white', 'w-6');
+                        activeDot.classList.add('bg-[#E1DCC9]', 'w-5');
                     } else {
                         activeDot.classList.add('bg-slate-900', 'w-5');
                     }
@@ -194,7 +193,6 @@
                     }
                 }
 
-                // Listen to dark mode changes to update dot indicator styling dynamically
                 const observer = new MutationObserver(() => {
                     showSlide(currentSlide);
                 });
@@ -204,12 +202,12 @@
             });
         </script>
     <% } else { %>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[400px] flex items-center justify-center text-center">
-            <div class="space-y-6">
-                <h1 class="text-5xl font-bold text-slate-800 dark:text-white leading-tight">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[300px] flex items-center justify-center text-center">
+            <div class="space-y-4">
+                <h1 class="text-4xl font-bold text-slate-800 dark:text-[#E1DCC9] leading-tight">
                     Discover Amazing <span class="bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">Products</span>
                 </h1>
-                <p class="text-xl text-slate-600 dark:text-slate-300 max-w-xl mx-auto">
+                <p class="text-base text-slate-600 dark:text-slate-350 max-w-xl mx-auto">
                     Browse and shop premium affiliate products across multiple categories.
                 </p>
             </div>
@@ -218,21 +216,21 @@
 </section>
 
 <!-- Categories Grid -->
-<section id="categories" class="py-16 bg-white dark:bg-[#0B0F19] transition-colors duration-300">
+<section id="categories" class="py-16 bg-white dark:bg-[#1F150C] transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Browse Categories</h2>
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-[#E1DCC9] mb-4">Browse Categories</h2>
         </div>
         
         <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             <% categories.forEach(category => { %>
-                <a href="/category/<%= category.slug %>" class="category-badge glass-card p-6 rounded-3xl block hover:bg-white/60 dark:hover:bg-[#151B2C]/40 transition-all duration-300 group cursor-pointer relative overflow-hidden">
+                <a href="/category/<%= category.slug %>" class="category-badge glass-card p-6 rounded-3xl block hover:bg-white/60 dark:hover:bg-[#412D15]/40 transition-all duration-300 group cursor-pointer relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <div class="relative z-10">
-                        <div class="w-14 h-14 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform duration-300">
-                            <i class="<%= category.icon %> text-white text-2xl"></i>
+                        <div class="w-14 h-14 bg-gradient-to-br from-[#412D15] to-[#7c3aed] dark:from-[#E1DCC9] dark:to-[#412D15] rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform duration-300">
+                            <i class="<%= category.icon %> text-white dark:text-[#1F150C] text-2xl"></i>
                         </div>
-                        <h3 class="font-bold text-gray-900 dark:text-white text-lg group-hover:text-primary dark:group-hover:text-indigo-400 transition-colors"><%= category.name %></h3>
+                        <h3 class="font-bold text-gray-900 dark:text-[#E1DCC9] text-lg group-hover:text-primary dark:group-hover:text-[#E1DCC9] transition-colors"><%= category.name %></h3>
                     </div>
                 </a>
             <% }) %>
@@ -241,15 +239,15 @@
 </section>
 
 <!-- Trending Products -->
-<section id="trending" class="py-16 bg-gray-50 dark:bg-[#111827]/40 border-t border-gray-100 dark:border-slate-800/40 transition-colors duration-300">
+<section id="trending" class="py-16 bg-gray-50 dark:bg-[#000000]/25 border-t border-gray-100 dark:border-[#412D15]/40 transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mb-8">
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Trending Products</h2>
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-[#E1DCC9] mb-2">Trending Products</h2>
         </div>
         
         <div class="product-grid mt-10">
             <% products.forEach(product => { %>
-                <div class="product-card glass-card rounded-3xl overflow-hidden hover:bg-white/80 dark:hover:bg-[#151B2C]/40 transition-all duration-500 border border-white/50 dark:border-slate-800/40 group relative">
+                <div class="product-card glass-card rounded-3xl overflow-hidden hover:bg-white/80 dark:hover:bg-[#412D15]/45 transition-all duration-500 border border-white/50 dark:border-[#412D15]/40 group relative">
                     <a href="/product/<%= product.slug %>" class="relative block overflow-hidden">
                         <img src="<%= product.cover_image %>" alt="<%= product.title %>" loading="lazy" class="w-full h-56 object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
                         <% if (product.badge) { %>
@@ -259,16 +257,16 @@
                         <% } %>
                     </a>
                     <div class="p-8">
-                        <a href="/category/<%= product.category_slug %>" class="text-xs text-secondary font-bold uppercase tracking-widest mb-3 inline-block hover:text-primary dark:hover:text-indigo-400 transition-colors">
+                        <a href="/category/<%= product.category_slug %>" class="text-xs text-secondary dark:text-indigo-400 font-bold uppercase tracking-widest mb-3 inline-block hover:text-primary dark:hover:text-[#E1DCC9] transition-colors">
                             <%= product.category_name %>
                         </a>
                         <a href="/product/<%= product.slug %>">
-                            <h3 class="font-bold text-gray-900 dark:text-white text-xl mb-3 hover:text-primary dark:hover:text-indigo-400 transition-colors line-clamp-1"><%= product.title %></h3>
+                            <h3 class="font-bold text-gray-900 dark:text-[#E1DCC9] text-xl mb-3 hover:text-primary dark:hover:text-[#E1DCC9] transition-colors line-clamp-1"><%= product.title %></h3>
                         </a>
-                        <p class="text-gray-500 dark:text-slate-400 text-sm mb-6 line-clamp-2 leading-relaxed"><%= product.description %></p>
+                        <p class="text-gray-500 dark:text-slate-350 text-sm mb-6 line-clamp-2 leading-relaxed"><%= product.description %></p>
                         <div class="flex justify-between items-center mt-auto">
-                            <span class="text-3xl font-extrabold text-slate-800 dark:text-white price-display" data-price="<%= product.price %>">$<%= product.price %></span>
-                            <a href="<%= product.affiliate_link %>" target="_blank" rel="noopener noreferrer" class="bg-gray-900 dark:bg-slate-800 text-white px-5 py-2.5 rounded-xl hover:bg-primary dark:hover:bg-primary hover:shadow-[0_0_15px_rgba(79,70,229,0.5)] transition-all duration-300 font-medium flex items-center">
+                            <span class="text-3xl font-extrabold text-slate-800 dark:text-[#E1DCC9] price-display" data-price="<%= product.price %>">$<%= product.price %></span>
+                            <a href="<%= product.affiliate_link %>" target="_blank" rel="noopener noreferrer" class="bg-gray-900 dark:bg-[#412D15] text-white dark:text-[#E1DCC9] px-5 py-2.5 rounded-xl hover:bg-primary dark:hover:bg-primary hover:shadow-[0_0_15px_rgba(79,70,229,0.5)] transition-all duration-300 font-medium flex items-center border dark:border-[#412D15]/50">
                                 <i class="fas fa-shopping-cart mr-2 text-sm"></i> Deal
                             </a>
                         </div>

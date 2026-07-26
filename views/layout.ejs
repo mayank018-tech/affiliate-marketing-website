@@ -31,7 +31,11 @@
                         primary: '#4f46e5', // deeper indigo
                         secondary: '#7c3aed', // richer violet
                         accent: '#ec4899',
-                        dark: '#0B0F19',
+                        dark: '#1F150C',
+                        huntBlack: '#000000',
+                        huntDark: '#1F150C',
+                        huntMedium: '#412D15',
+                        huntLight: '#E1DCC9',
                         light: '#f8fafc'
                     },
                     animation: {
@@ -63,6 +67,12 @@
             background-color: rgba(255, 255, 255, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.6);
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+            transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+        .dark .glass-card {
+            background-color: rgba(65, 45, 21, 0.45);
+            border: 1px solid rgba(225, 220, 201, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
         }
         .gradient-bg {
             background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
@@ -92,20 +102,20 @@
         }
     </style>
 </head>
-<body class="bg-[#f0f4f8] text-slate-800 dark:bg-[#0B0F19] dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+<body class="bg-[#f0f4f8] text-slate-800 dark:bg-[#1F150C] dark:text-[#E1DCC9] min-h-screen flex flex-col transition-colors duration-300">
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full bg-white/70 dark:bg-[#0B0F19]/70 backdrop-blur-xl z-50 border-b border-white/40 dark:border-slate-850/40 shadow-sm transition-all duration-300">
+    <nav class="fixed top-0 w-full bg-white/70 dark:bg-[#1F150C]/80 backdrop-blur-xl z-50 border-b border-white/40 dark:border-[#412D15]/30 shadow-sm transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <a href="/" class="flex items-center space-x-2">
-                    <div class="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center">
-                        <i class="fas fa-gem text-white text-sm"></i>
+                <a href="/" class="flex items-center space-x-2.5">
+                    <div class="w-8 h-8 bg-gradient-to-r from-[#412D15] to-[#7c3aed] dark:from-[#E1DCC9] dark:to-white rounded-xl flex items-center justify-center shadow-md">
+                        <i class="fas fa-shopping-bag text-white dark:text-[#1F150C] text-sm"></i>
                     </div>
-                    <span class="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">NexusAffiliate</span>
+                    <span class="text-xl font-extrabold bg-gradient-to-r from-primary to-secondary dark:from-[#E1DCC9] dark:to-white bg-clip-text text-transparent tracking-tight">NexusAffiliate</span>
                 </a>
                 
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="/" class="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">Home</a>
+                    <a href="/" class="text-slate-600 dark:text-[#E1DCC9] hover:text-indigo-650 dark:hover:text-white font-medium transition-colors">Home</a>
                     <a href="/#categories" class="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">Categories</a>
                     <a href="/#trending" class="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">Trending</a>
                 </div>
@@ -113,7 +123,7 @@
                 <div class="hidden md:flex items-center space-x-4">
                     <!-- Currency Selector -->
                     <div class="relative">
-                        <select id="currency-selector" class="bg-white/10 dark:bg-slate-800/40 text-slate-700 dark:text-slate-200 px-3 py-1 rounded border border-slate-200 dark:border-slate-750 outline-none focus:border-primary">
+                        <select id="currency-selector" class="bg-white/10 dark:bg-[#412D15]/45 text-slate-700 dark:text-[#E1DCC9] px-3 py-1 rounded border border-slate-200 dark:border-[#412D15]/50 outline-none focus:border-primary">
                             <option value="INR">INR (₹)</option>
                             <option value="USD">USD ($)</option>
                             <option value="EUR">EUR (€)</option>
@@ -121,7 +131,7 @@
                             <option value="CAD">CAD ($)</option>
                             <option value="AUD">AUD ($)</option>
                         </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-indigo-700 dark:text-indigo-400">
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-indigo-700 dark:text-[#E1DCC9]">
                             <i class="fas fa-chevron-down text-xs"></i>
                         </div>
                     </div>
@@ -144,8 +154,13 @@
                 </div>
 
                 <!-- Mobile menu button -->
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-indigo-600 focus:outline-none p-2">
+                <div class="md:hidden flex items-center space-x-2">
+                    <!-- Mobile Topbar Theme Toggle -->
+                    <button id="mobile-top-theme-toggle" class="text-slate-600 dark:text-[#E1DCC9] p-2 hover:bg-slate-100 dark:hover:bg-[#412D15]/50 rounded-full transition-colors focus:outline-none" aria-label="Toggle Theme">
+                        <i id="mobile-top-theme-toggle-icon" class="fas fa-moon text-lg"></i>
+                    </button>
+                    
+                    <button id="mobile-menu-btn" class="text-slate-600 dark:text-[#E1DCC9] hover:text-indigo-600 focus:outline-none p-2">
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
                 </div>
@@ -153,15 +168,15 @@
         </div>
 
         <!-- Mobile Menu Panel -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-[#151B2C] border-t border-slate-100 dark:border-slate-800 shadow-lg absolute w-full transition-all duration-300">
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-[#1F150C] border-t border-slate-100 dark:border-[#412D15]/40 shadow-lg absolute w-full transition-all duration-300">
             <div class="px-4 pt-2 pb-4 space-y-3 flex flex-col">
-                <a href="/" class="block px-3 py-2 text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-md font-medium">Home</a>
+                <a href="/" class="block px-3 py-2 text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-[#412D15]/50 hover:text-indigo-600 dark:hover:text-[#E1DCC9] rounded-md font-medium">Home</a>
                 <a href="/#categories" class="block px-3 py-2 text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-md font-medium">Categories</a>
                 <a href="/#trending" class="block px-3 py-2 text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-md font-medium">Trending</a>
                 
                 <div class="px-3 py-2 border-t border-slate-100 dark:border-slate-800 mt-2">
                     <label class="block text-sm text-slate-500 mb-1">Currency</label>
-                    <select id="mobile-currency-selector" class="w-full bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 px-3 py-2 rounded border border-slate-200 dark:border-slate-700 outline-none">
+                    <select id="mobile-currency-selector" class="w-full bg-slate-50 dark:bg-[#412D15]/45 text-slate-700 dark:text-[#E1DCC9] px-3 py-2 rounded border border-slate-200 dark:border-[#412D15]/50 outline-none">
                         <option value="INR">INR (₹)</option>
                         <option value="USD">USD ($)</option>
                         <option value="EUR">EUR (€)</option>
@@ -208,26 +223,24 @@
             const themeToggleIcon = document.getElementById('theme-toggle-icon');
             const mobileThemeToggleBtn = document.getElementById('mobile-theme-toggle');
             const mobileThemeToggleIcon = document.getElementById('mobile-theme-toggle-icon');
+            const mobileTopThemeToggleBtn = document.getElementById('mobile-top-theme-toggle');
+            const mobileTopThemeToggleIcon = document.getElementById('mobile-top-theme-toggle-icon');
 
             function updateToggleIcons(isDark) {
                 if (isDark) {
-                    if (themeToggleIcon) {
-                        themeToggleIcon.classList.remove('fa-moon');
-                        themeToggleIcon.classList.add('fa-sun');
-                    }
-                    if (mobileThemeToggleIcon) {
-                        mobileThemeToggleIcon.classList.remove('fa-moon');
-                        mobileThemeToggleIcon.classList.add('fa-sun');
-                    }
+                    [themeToggleIcon, mobileThemeToggleIcon, mobileTopThemeToggleIcon].forEach(icon => {
+                        if (icon) {
+                            icon.classList.remove('fa-moon');
+                            icon.classList.add('fa-sun');
+                        }
+                    });
                 } else {
-                    if (themeToggleIcon) {
-                        themeToggleIcon.classList.remove('fa-sun');
-                        themeToggleIcon.classList.add('fa-moon');
-                    }
-                    if (mobileThemeToggleIcon) {
-                        mobileThemeToggleIcon.classList.remove('fa-sun');
-                        mobileThemeToggleIcon.classList.add('fa-moon');
-                    }
+                    [themeToggleIcon, mobileThemeToggleIcon, mobileTopThemeToggleIcon].forEach(icon => {
+                        if (icon) {
+                            icon.classList.remove('fa-sun');
+                            icon.classList.add('fa-moon');
+                        }
+                    });
                 }
             }
 
@@ -245,6 +258,9 @@
             }
             if (mobileThemeToggleBtn) {
                 mobileThemeToggleBtn.addEventListener('click', toggleTheme);
+            }
+            if (mobileTopThemeToggleBtn) {
+                mobileTopThemeToggleBtn.addEventListener('click', toggleTheme);
             }
 
             // Sync mobile currency selector with desktop
