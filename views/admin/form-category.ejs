@@ -1,39 +1,39 @@
 <div class="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
     <div class="mb-8 flex items-center justify-between">
         <div class="flex items-center space-x-4">
-            <a href="/admin" class="text-slate-500 hover:text-indigo-600 transition-colors bg-white w-10 h-10 rounded-full flex items-center justify-center shadow-sm">
+            <a href="/admin" class="text-slate-500 dark:text-[#E1DCC9] hover:text-primary dark:hover:text-indigo-400 transition-colors bg-white dark:bg-[#412D15]/40 w-10 h-10 rounded-full flex items-center justify-center shadow-sm border border-slate-200/50 dark:border-[#412D15]/30">
                 <i class="fas fa-arrow-left"></i>
             </a>
-            <h1 class="text-3xl font-bold text-slate-800 font-['Outfit']"><%= title %></h1>
+            <h1 class="text-3xl font-extrabold text-slate-800 dark:text-[#E1DCC9] font-sans tracking-tight"><%= title %></h1>
         </div>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden">
+    <div class="glass-card rounded-[2rem] overflow-hidden border border-slate-205/50 dark:border-[#412D15]/30 bg-white/40 dark:bg-[#412D15]/10">
         <form action="<%= category.id ? '/admin/categories/' + category.id : '/admin/categories' %>" method="POST" class="p-8 space-y-6">
             
             <div class="grid grid-cols-1 gap-6">
                 <!-- Name -->
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">Category Name</label>
-                    <input type="text" name="name" value="<%= category.name || '' %>" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all">
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Category Name</label>
+                    <input type="text" name="name" value="<%= category.name || '' %>" required class="w-full px-4 py-3 bg-white/60 dark:bg-[#412D15]/40 border border-slate-200 dark:border-[#412D15]/50 rounded-xl text-slate-800 dark:text-[#E1DCC9] placeholder-slate-400 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all">
                 </div>
 
                 <!-- Slug -->
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">Slug (URL friendly)</label>
-                    <input type="text" name="slug" value="<%= category.slug || '' %>" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all">
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Slug (URL friendly)</label>
+                    <input type="text" name="slug" value="<%= category.slug || '' %>" required class="w-full px-4 py-3 bg-white/60 dark:bg-[#412D15]/40 border border-slate-200 dark:border-[#412D15]/50 rounded-xl text-slate-800 dark:text-[#E1DCC9] placeholder-slate-400 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all">
                 </div>
 
                 <!-- Icon -->
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">FontAwesome Icon Class (e.g., 'fas fa-laptop')</label>
-                    <input type="text" name="icon" value="<%= category.icon || '' %>" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all">
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">FontAwesome Icon Class (e.g., 'fas fa-laptop')</label>
+                    <input type="text" name="icon" value="<%= category.icon || '' %>" required class="w-full px-4 py-3 bg-white/60 dark:bg-[#412D15]/40 border border-slate-200 dark:border-[#412D15]/50 rounded-xl text-slate-800 dark:text-[#E1DCC9] placeholder-slate-400 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all">
                 </div>
             </div>
 
-            <div class="pt-6 border-t border-slate-100 flex justify-end space-x-4">
-                <a href="/admin" class="px-6 py-3 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 transition-colors">Cancel</a>
-                <button type="submit" class="px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl hover:opacity-90 shadow-lg shadow-primary/30 transition-all transform hover:-translate-y-0.5">
+            <div class="pt-6 border-t border-slate-200/50 dark:border-[#412D15]/40 flex justify-end space-x-4">
+                <a href="/admin" class="px-6 py-3 bg-slate-100 dark:bg-[#412D15]/45 text-slate-700 dark:text-[#E1DCC9] font-bold rounded-xl hover:bg-slate-200 dark:hover:bg-[#412D15]/60 transition-colors">Cancel</a>
+                <button type="submit" class="px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl hover:opacity-95 shadow-lg shadow-primary/20 transition-all transform hover:-translate-y-0.5">
                     Save Category
                 </button>
             </div>
