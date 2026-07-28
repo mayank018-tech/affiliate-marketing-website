@@ -154,15 +154,10 @@
                     }
 
                     function applyColor(colors) {
-                        const navLinks = document.querySelectorAll('.nav-menu-link');
                         if (!colors) {
                             accentLine.style.background = '';
                             navBar.style.borderColor = '';
                             navBar.style.backgroundColor = '';
-                            navLinks.forEach(link => {
-                                link.style.setProperty('--hover-color', '');
-                                link.style.color = '';
-                            });
                             return;
                         }
                         const { r, g, b } = colors;
@@ -171,22 +166,18 @@
                         
                         const isDark = document.documentElement.classList.contains('dark');
                         if (isDark) {
-                            navBar.style.backgroundColor = `rgba(31, 21, 12, 0.85)`;
+                            // Dark tint backdrop: blend product color with dark body theme (1F150C)
+                            const mixR = Math.floor(r * 0.25 + 31 * 0.75);
+                            const mixG = Math.floor(g * 0.25 + 21 * 0.75);
+                            const mixB = Math.floor(b * 0.25 + 12 * 0.75);
+                            navBar.style.backgroundColor = `rgba(${mixR}, ${mixG}, ${mixB}, 0.9)`;
                         } else {
-                            navBar.style.backgroundColor = `rgba(${r}, ${g}, ${b}, 0.08)`;
+                            // Light tint backdrop: blend product color with light body theme (f0f4f8)
+                            const mixR = Math.floor(r * 0.25 + 240 * 0.75);
+                            const mixG = Math.floor(g * 0.25 + 244 * 0.75);
+                            const mixB = Math.floor(b * 0.25 + 248 * 0.75);
+                            navBar.style.backgroundColor = `rgba(${mixR}, ${mixG}, ${mixB}, 0.85)`;
                         }
-
-                        // Apply color dynamic state to nav links (Home, Categories, Trending)
-                        navLinks.forEach(link => {
-                            link.style.setProperty('--hover-color', `rgb(${r}, ${g}, ${b})`);
-                            // Since this is homepage, Home is active unless they scroll or navigate
-                            const isHome = link.getAttribute('href') === '/';
-                            if (isHome) {
-                                link.style.color = `rgb(${r}, ${g}, ${b})`;
-                            } else {
-                                link.style.color = '';
-                            }
-                        });
                     }
 
                     if (imgElement.complete && imgElement.naturalHeight !== 0) {
