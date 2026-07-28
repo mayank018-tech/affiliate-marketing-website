@@ -61,6 +61,13 @@
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3, h4, h5, h6, .font-bold, .font-semibold { font-family: 'Outfit', sans-serif; }
         
+        .nav-menu-link {
+            transition: color 0.3s ease;
+        }
+        .nav-menu-link:hover {
+            color: var(--hover-color, #4f46e5) !important;
+        }
+        
         .glass-card {
             backdrop-filter: blur(20px) saturate(200%);
             -webkit-backdrop-filter: blur(20px) saturate(200%);
@@ -117,9 +124,9 @@
                 </a>
                 
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="/" class="text-slate-600 dark:text-[#E1DCC9] hover:text-indigo-650 dark:hover:text-white font-medium transition-colors">Home</a>
-                    <a href="/#categories" class="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">Categories</a>
-                    <a href="/#trending" class="text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">Trending</a>
+                    <a href="/" class="nav-menu-link text-slate-600 dark:text-[#E1DCC9] hover:text-indigo-650 dark:hover:text-white font-medium transition-colors">Home</a>
+                    <a href="/#categories" class="nav-menu-link text-slate-600 dark:text-slate-350 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">Categories</a>
+                    <a href="/#trending" class="nav-menu-link text-slate-600 dark:text-slate-350 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">Trending</a>
                 </div>
                 
                 <div class="hidden md:flex items-center space-x-4">

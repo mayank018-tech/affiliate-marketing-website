@@ -154,10 +154,15 @@
                     }
 
                     function applyColor(colors) {
+                        const navLinks = document.querySelectorAll('.nav-menu-link');
                         if (!colors) {
                             accentLine.style.background = '';
                             navBar.style.borderColor = '';
                             navBar.style.backgroundColor = '';
+                            navLinks.forEach(link => {
+                                link.style.setProperty('--hover-color', '');
+                                link.style.color = '';
+                            });
                             return;
                         }
                         const { r, g, b } = colors;
@@ -170,6 +175,18 @@
                         } else {
                             navBar.style.backgroundColor = `rgba(${r}, ${g}, ${b}, 0.08)`;
                         }
+
+                        // Apply color dynamic state to nav links (Home, Categories, Trending)
+                        navLinks.forEach(link => {
+                            link.style.setProperty('--hover-color', `rgb(${r}, ${g}, ${b})`);
+                            // Since this is homepage, Home is active unless they scroll or navigate
+                            const isHome = link.getAttribute('href') === '/';
+                            if (isHome) {
+                                link.style.color = `rgb(${r}, ${g}, ${b})`;
+                            } else {
+                                link.style.color = '';
+                            }
+                        });
                     }
 
                     if (imgElement.complete && imgElement.naturalHeight !== 0) {
