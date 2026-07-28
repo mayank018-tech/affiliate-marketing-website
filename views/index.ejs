@@ -20,7 +20,7 @@
                             <div class="order-1 lg:order-2 lg:col-span-5 flex justify-center relative">
                                 <div class="absolute inset-0 bg-gradient-to-tr from-primary/20 to-secondary/20 dark:from-primary/15 dark:to-secondary/15 rounded-3xl blur-2xl animate-pulse-slow"></div>
                                 <div class="relative glass-card p-2 rounded-3xl border border-white/20 shadow-xl hover:scale-[1.01] transition-transform duration-500">
-                                    <img src="<%= product.cover_image %>" alt="<%= product.title %>" class="w-[120px] h-[120px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] lg:w-[260px] lg:h-[260px] xl:w-[280px] xl:h-[280px] object-cover rounded-2xl shadow-md">
+                                    <img src="<%= product.cover_image %>" alt="<%= product.title %>" crossOrigin="anonymous" class="slideshow-image w-[120px] h-[120px] sm:w-[170px] sm:h-[170px] md:w-[200px] md:h-[200px] lg:w-[260px] lg:h-[260px] xl:w-[280px] xl:h-[280px] object-cover rounded-2xl shadow-md">
                                 </div>
                             </div>
 
@@ -94,6 +94,93 @@
                 let slideInterval;
                 const intervalTime = 5000;
                 
+                function updateNavBarColor(imgElement) {
+                    const navBar = document.getElementById('main-nav-bar');
+                    const accentLine = document.getElementById('nav-accent-line');
+                    if (!navBar || !accentLine || !imgElement) return;
+
+                    function getAverageColor(img) {
+                        try {
+                            const canvas = document.createElement('canvas');
+                            const ctx = canvas.getContext('2d');
+                            canvas.width = 5;
+                            canvas.height = 5;
+                            // Set crossOrigin via JS just in case, though it is on the element
+                            img.crossOrigin = "anonymous";
+                            ctx.drawImage(img, 0, 0, 5, 5);
+                            const imgData = ctx.getImageData(0, 0, 5, 5).data;
+                            
+                            let r = 0, g = 0, b = 0, count = 0;
+                            for (let i = 0; i < imgData.length; i += 4) {
+                                // Exclude extremely light/dark pixels to find pure colors
+                                const total = imgData[i] + imgData[i+1] + imgData[i+2];
+                                if (total > 50 && total < 720) {
+                                    r += imgData[i];
+                                    g += imgData[i+1];
+                                    b += imgData[i+2];
+                                    count++;
+                                }
+                            }
+                            
+                            if (count === 0) {
+                                for (let i = 0; i < imgData.length; i += 4) {
+                                    r += imgData[i];
+                                    g += imgData[i+1];
+                                    b += imgData[i+2];
+                                    count++;
+                                }
+                            }
+                            
+                            r = Math.floor(r / count);
+                            g = Math.floor(g / count);
+                            b = Math.floor(b / count);
+                            
+                            // Boost saturation to make it a vibrant accent color
+                            const max = Math.max(r, g, b);
+                            const min = Math.min(r, g, b);
+                            const delta = (max - min) / 255;
+                            if (delta < 0.2) {
+                                // If the image is very grayscale, make it more vibrant by shifting to primary colors
+                                r = Math.min(255, Math.floor(r * 1.1 + 20));
+                                g = Math.min(255, Math.floor(g * 1.0));
+                                b = Math.min(255, Math.floor(b * 1.2 + 20));
+                            }
+                            
+                            return { r, g, b };
+                        } catch (e) {
+                            console.warn("Unable to extract image color due to CORS limitations:", e);
+                            return null;
+                        }
+                    }
+
+                    function applyColor(colors) {
+                        if (!colors) {
+                            accentLine.style.background = '';
+                            navBar.style.borderColor = '';
+                            navBar.style.backgroundColor = '';
+                            return;
+                        }
+                        const { r, g, b } = colors;
+                        accentLine.style.background = `rgb(${r}, ${g}, ${b})`;
+                        navBar.style.borderColor = `rgba(${r}, ${g}, ${b}, 0.25)`;
+                        
+                        const isDark = document.documentElement.classList.contains('dark');
+                        if (isDark) {
+                            navBar.style.backgroundColor = `rgba(31, 21, 12, 0.85)`;
+                        } else {
+                            navBar.style.backgroundColor = `rgba(${r}, ${g}, ${b}, 0.08)`;
+                        }
+                    }
+
+                    if (imgElement.complete && imgElement.naturalHeight !== 0) {
+                        applyColor(getAverageColor(imgElement));
+                    } else {
+                        imgElement.addEventListener('load', () => {
+                            applyColor(getAverageColor(imgElement));
+                        }, { once: true });
+                    }
+                }
+
                 function showSlide(index) {
                     if (slides.length === 0) return;
                     
@@ -118,6 +205,18 @@
                     } else {
                         activeDot.classList.add('bg-slate-900', 'w-5');
                     }
+
+                    // Dynamically update menu bar color based on active product cover image
+                    const activeImg = slides[currentSlide].querySelector('.slideshow-image');
+                    if (activeImg) {
+                        updateNavBarColor(activeImg);
+                    }
+                }
+
+                // Initial run for the first slide on page load
+                const firstImg = slides[0]?.querySelector('.slideshow-image');
+                if (firstImg) {
+                    updateNavBarColor(firstImg);
                 }
                 
                 function nextSlide() {
