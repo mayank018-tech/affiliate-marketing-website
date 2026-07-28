@@ -330,12 +330,24 @@
         </div>
         
         <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            <% categories.forEach(category => { %>
+            <% 
+            const gradients = [
+                "from-indigo-500 to-purple-600 shadow-indigo-500/30",
+                "from-rose-500 to-pink-600 shadow-pink-500/30",
+                "from-amber-500 to-orange-600 shadow-orange-500/30",
+                "from-emerald-500 to-teal-600 shadow-emerald-500/30",
+                "from-blue-500 to-cyan-600 shadow-blue-500/30",
+                "from-violet-500 to-fuchsia-600 shadow-fuchsia-500/30",
+                "from-red-500 to-rose-600 shadow-red-500/30",
+                "from-teal-500 to-emerald-600 shadow-teal-500/30"
+            ];
+            %>
+            <% categories.forEach((category, index) => { %>
                 <a href="/category/<%= category.slug %>" class="category-badge glass-card p-6 rounded-3xl block hover:bg-white/60 dark:hover:bg-[#412D15]/40 transition-all duration-300 group cursor-pointer relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <div class="relative z-10">
-                        <div class="w-14 h-14 bg-gradient-to-br from-[#412D15] to-[#7c3aed] dark:from-[#E1DCC9] dark:to-[#412D15] rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform duration-300">
-                            <i class="<%= category.icon %> text-white dark:text-[#1F150C] text-2xl"></i>
+                        <div class="w-14 h-14 bg-gradient-to-br <%= gradients[index % gradients.length] %> rounded-2xl flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                            <i class="<%= category.icon %> text-white text-2xl"></i>
                         </div>
                         <h3 class="font-bold text-gray-900 dark:text-[#E1DCC9] text-lg group-hover:text-primary dark:group-hover:text-[#E1DCC9] transition-colors"><%= category.name %></h3>
                     </div>
