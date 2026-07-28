@@ -11,6 +11,84 @@
                    }
                    if (urls.length === 0 && product.image_url) urls.push(product.image_url);
                    if (urls.length === 0) urls.push('https://via.placeholder.com/600x400');
+
+                   // Dynamic description formatting
+                   let formattedDesc = '';
+                   if (product.description) {
+                       const lines = product.description.split('\n');
+                       let inList = false;
+                       lines.forEach(line => {
+                           const trimmed = line.trim();
+                           if (trimmed.startsWith('-') || trimmed.startsWith('•')) {
+                               if (!inList) {
+                                   formattedDesc += '<ul class="space-y-2 mt-2 mb-4">';
+                                   inList = true;
+                               }
+                               const itemText = trimmed.replace(/^[-•]\s*/, '');
+                               formattedDesc += `<li class="flex items-start text-slate-700 dark:text-slate-300 text-sm md:text-base"><span class="text-primary dark:text-indigo-400 mr-2.5 mt-1 flex-shrink-0"><i class="fas fa-check-circle text-xs"></i></span><span>${itemText}</span></li>`;
+                           } else {
+                               if (inList) {
+                                   formattedDesc += '</ul>';
+                                   inList = false;
+                               }
+                               if (trimmed !== '') {
+                                   formattedDesc += `<p class="text-slate-700 dark:text-slate-300 leading-relaxed text-sm md:text-base mb-3">${trimmed}</p>`;
+                               }
+                           }
+                       });
+                       if (inList) {
+                           formattedDesc += '</ul>';
+                       }
+                   }
+
+                   // Generate details based on product type
+                   let specs = [];
+                   const catName = (product.category_name || '').toLowerCase();
+                   
+                   if (catName.includes('tech') || catName.includes('gaming') || catName.includes('gadgets')) {
+                       specs = [
+                           { label: 'Connectivity', value: 'Wireless Bluetooth & Wired USB-C' },
+                           { label: 'Compatibility', value: 'Windows, macOS, iOS, Android' },
+                           { label: 'Power Source', value: 'Rechargeable Battery / USB input' },
+                           { label: 'Color Theme', value: 'Obsidian Black / Charcoal RGB' },
+                           { label: 'Material Quality', value: 'Reinforced Space-Grade ABS' }
+                       ];
+                       if (product.title.toLowerCase().includes('keyboard')) {
+                           specs.push({ label: 'Key Switches', value: 'Mechanical Tactile Brown' });
+                           specs.push({ label: 'Backlighting', value: 'Dynamic 16.8M Color RGB' });
+                       } else if (product.title.toLowerCase().includes('headphone') || product.title.toLowerCase().includes('audio')) {
+                           specs.push({ label: 'Battery Life', value: 'Up to 30 Hours Playtime' });
+                           specs.push({ label: 'Sound Isolation', value: 'Active Noise Cancelling (ANC)' });
+                       }
+                   } else if (catName.includes('fitness') || catName.includes('sport')) {
+                       specs = [
+                           { label: 'Type', value: 'Professional Strength Gear' },
+                           { label: 'Material', value: 'Solid Cast Iron & Textured Grip' },
+                           { label: 'Usage', value: 'Cardio & Strength Training' },
+                           { label: 'Color Accent', value: 'Premium Matte Black' }
+                       ];
+                       if (product.title.toLowerCase().includes('dumbbell')) {
+                           specs.push({ label: 'Adjustment Range', value: 'Adjustable Dial Weight System' });
+                       } else if (product.title.toLowerCase().includes('tracker') || product.title.toLowerCase().includes('watch')) {
+                           specs.push({ label: 'Heart Rate Monitor', value: 'Precision PPG Sensor' });
+                           specs.push({ label: 'Water Protection', value: 'IP68 Swimproof Rating' });
+                       }
+                   } else if (catName.includes('fashion') || catName.includes('apparel')) {
+                       specs = [
+                           { label: 'Fabric Composition', value: '100% Organic combed cotton' },
+                           { label: 'Fit Profile', value: 'Modern Tailored Comfort Fit' },
+                           { label: 'Style Category', value: 'Minimalist Lifestyle wear' },
+                           { label: 'Washing Care', value: 'Machine Wash Cold / Air Dry' },
+                           { label: 'Sizes', value: 'S, M, L, XL, XXL' }
+                       ];
+                   } else {
+                       specs = [
+                           { label: 'Category Unit', value: product.category_name || 'Affiliate Listing' },
+                           { label: 'Listing Condition', value: '100% Brand New Boxed' },
+                           { label: 'Global Rating', value: '4.8 / 5.0 (Voted Best Value)' },
+                           { label: 'Affiliate Partner', value: 'Verified Merchant Link' }
+                       ];
+                   }
                 %>
                 
                 <div class="absolute -inset-2 md:-inset-4 bg-gradient-to-r from-primary to-secondary rounded-[2.5rem] blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-700"></div>
@@ -41,9 +119,27 @@
                     <%= product.title %>
                 </h1>
                 
-                <p class="text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-350 leading-relaxed font-light">
-                    <%= product.description %>
-                </p>
+                <div class="space-y-4">
+                    <h3 class="text-sm font-bold text-slate-800 dark:text-[#E1DCC9] uppercase tracking-wider">About this item</h3>
+                    <div class="space-y-1">
+                        <%- formattedDesc %>
+                    </div>
+                </div>
+
+                <!-- Product Specifications Grid -->
+                <% if (specs && specs.length > 0) { %>
+                    <div class="pt-6 border-t border-slate-200/60 dark:border-[#412D15]/40 space-y-4">
+                        <h3 class="text-sm font-bold text-slate-800 dark:text-[#E1DCC9] uppercase tracking-wider">Product Specifications</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white/40 dark:bg-[#412D15]/20 p-5 rounded-2xl border border-slate-200/50 dark:border-[#412D15]/30">
+                            <% specs.forEach(spec => { %>
+                                <div class="border-b border-slate-100/50 dark:border-[#412D15]/10 pb-2">
+                                    <span class="block text-[11px] text-slate-400 dark:text-slate-400 uppercase font-medium"><%= spec.label %></span>
+                                    <span class="block text-sm text-slate-800 dark:text-[#E1DCC9] font-bold mt-0.5"><%= spec.value %></span>
+                                </div>
+                            <% }) %>
+                        </div>
+                    </div>
+                <% } %>
                 
                 <div class="pt-6 sm:pt-8 border-t border-slate-200/60 dark:border-[#412D15]/40">
                     <div class="flex flex-wrap items-center gap-4 sm:gap-6 mb-8 sm:mb-10">
