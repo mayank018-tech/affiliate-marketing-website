@@ -121,46 +121,10 @@
                 
                 <div class="space-y-4">
                     <h3 class="text-sm font-bold text-slate-800 dark:text-[#E1DCC9] uppercase tracking-wider">About this item</h3>
-                    <div id="product-description-container" class="space-y-1">
+                    <div class="space-y-1">
                         <%- formattedDesc %>
                     </div>
                 </div>
-
-                <% if (user && user.role === 'admin') { %>
-                    <!-- Premium Admin Control Panel for AI description optimization -->
-                    <div class="mt-6 p-6 bg-gradient-to-br from-indigo-900/10 via-purple-900/5 to-indigo-950/10 dark:from-[#352516]/40 dark:to-[#1F150C]/60 rounded-3xl border border-indigo-200/50 dark:border-[#412D15]/40 shadow-xl backdrop-blur-md">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center gap-2">
-                                <span class="flex h-3 w-3 relative">
-                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                                    <span class="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span>
-                                </span>
-                                <h4 class="text-sm font-bold text-indigo-950 dark:text-indigo-200 uppercase tracking-widest">Admin AI Assistant</h4>
-                            </div>
-                            <span class="text-[11px] text-slate-400 dark:text-slate-400 uppercase font-semibold">Gemini Pro-Active</span>
-                        </div>
-                        
-                        <p class="text-xs text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
-                            Convert unstructured, messy descriptions into clean, formatted Markdown layout. Changes will be saved to Supabase and pushed directly to the git repository.
-                        </p>
-
-                        <button type="button" id="optimize-desc-btn" data-id="<%= product.id %>" class="relative overflow-hidden w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-primary to-indigo-600 text-white font-bold text-sm tracking-wide shadow-lg shadow-primary/20 hover:shadow-primary/45 transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-2 border border-white/10">
-                            <span class="absolute inset-0 bg-white/10 opacity-0 hover:opacity-100 transition-opacity"></span>
-                            <i class="fas fa-magic text-xs animate-pulse"></i>
-                            <span id="btn-text">Optimize & Push to Repo</span>
-                        </button>
-
-                        <div id="ai-status-container" class="hidden mt-4 space-y-2.5">
-                            <div class="flex items-center justify-between text-[11px] text-slate-400 uppercase font-bold tracking-wider">
-                                <span id="status-step-text">Initializing AI agent...</span>
-                                <span id="status-percentage">0%</span>
-                            </div>
-                            <div class="w-full bg-slate-200 dark:bg-[#412D15]/40 rounded-full h-1.5 overflow-hidden">
-                                <div id="status-progress-bar" class="bg-gradient-to-r from-primary to-indigo-600 h-full rounded-full w-0 transition-all duration-500"></div>
-                            </div>
-                        </div>
-                    </div>
-                <% } %>
 
                 <!-- Product Specifications Grid -->
                 <% if (specs && specs.length > 0) { %>
@@ -362,118 +326,5 @@
                 }, 50);
             });
         });
-
-        // Admin optimization functionality
-        const optimizeBtn = document.getElementById('optimize-desc-btn');
-        if (optimizeBtn) {
-            const statusContainer = document.getElementById('ai-status-container');
-            const progressBar = document.getElementById('status-progress-bar');
-            const stepText = document.getElementById('status-step-text');
-            const percentageText = document.getElementById('status-percentage');
-            const btnText = document.getElementById('btn-text');
-            const descContainer = document.getElementById('product-description-container');
-            const productId = optimizeBtn.getAttribute('data-id');
-
-            let steps = [
-                { text: "Contacting Gemini API...", progress: 20 },
-                { text: "Structuring messy description...", progress: 50 },
-                { text: "Saving structured text to database...", progress: 75 },
-                { text: "Writing file & syncing to repo...", progress: 95 }
-            ];
-
-            optimizeBtn.addEventListener('click', async () => {
-                if (optimizeBtn.disabled) return;
-                optimizeBtn.disabled = true;
-                optimizeBtn.classList.add('opacity-70', 'cursor-not-allowed');
-                statusContainer.classList.remove('hidden');
-
-                let currentStep = 0;
-                let stepInterval = setInterval(() => {
-                    if (currentStep < steps.length) {
-                        progressBar.style.width = `${steps[currentStep].progress}%`;
-                        percentageText.innerText = `${steps[currentStep].progress}%`;
-                        stepText.innerText = steps[currentStep].text;
-                        currentStep++;
-                    }
-                }, 1000);
-
-                try {
-                    const response = await fetch(`/admin/products/${productId}/structure-description`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
-
-                    clearInterval(stepInterval);
-                    const data = await response.json();
-
-                    if (response.ok && data.success) {
-                        progressBar.style.width = '100%';
-                        percentageText.innerText = '100%';
-                        stepText.innerText = data.git_pushed ? 'Success! Description saved & pushed to Git.' : 'Saved to DB! (Git Push skipped/failed)';
-                        btnText.innerText = 'Restructuring Completed!';
-                        optimizeBtn.classList.remove('bg-gradient-to-r', 'from-primary', 'to-indigo-600');
-                        optimizeBtn.classList.add('bg-emerald-600');
-                        
-                        // Parse description (convert simple markdown lists to structured HTML)
-                        let parsedHtml = '';
-                        const lines = data.description.split('\n');
-                        let inList = false;
-                        lines.forEach(line => {
-                            const trimmed = line.trim();
-                            if (trimmed.startsWith('-') || trimmed.startsWith('•')) {
-                                if (!inList) {
-                                    parsedHtml += '<ul class="space-y-2 mt-2 mb-4">';
-                                    inList = true;
-                                }
-                                const itemText = trimmed.replace(/^[-•]\s*/, '');
-                                parsedHtml += `<li class="flex items-start text-slate-700 dark:text-slate-300 text-sm md:text-base"><span class="text-primary dark:text-indigo-400 mr-2.5 mt-1 flex-shrink-0"><i class="fas fa-check-circle text-xs"></i></span><span>${itemText}</span></li>`;
-                            } else {
-                                if (inList) {
-                                    parsedHtml += '</ul>';
-                                    inList = false;
-                                }
-                                if (trimmed !== '') {
-                                    if (trimmed.startsWith('#')) {
-                                        const depth = (trimmed.match(/^#+/) || [''])[0].length;
-                                        const text = trimmed.replace(/^#+\s*/, '');
-                                        const sizeClass = depth === 1 ? 'text-2xl font-black mt-4 mb-2' : depth === 2 ? 'text-xl font-extrabold mt-3 mb-2' : 'text-lg font-bold mt-2 mb-1';
-                                        parsedHtml += `<h4 class="${sizeClass} text-slate-800 dark:text-slate-200">${text}</h4>`;
-                                    } else {
-                                        parsedHtml += `<p class="text-slate-700 dark:text-slate-300 leading-relaxed text-sm md:text-base mb-3">${trimmed}</p>`;
-                                    }
-                                }
-                            }
-                        });
-                        if (inList) parsedHtml += '</ul>';
-
-                        // Animate update
-                        descContainer.style.opacity = 0;
-                        setTimeout(() => {
-                            descContainer.innerHTML = parsedHtml;
-                            descContainer.style.transition = 'opacity 0.5s ease';
-                            descContainer.style.opacity = 1;
-                        }, 300);
-                        
-                    } else {
-                        throw new Error(data.error || 'Server error occurred');
-                    }
-
-                } catch (error) {
-                    clearInterval(stepInterval);
-                    progressBar.style.width = '100%';
-                    progressBar.classList.remove('bg-gradient-to-r', 'from-primary', 'to-indigo-600');
-                    progressBar.classList.add('bg-red-600');
-                    percentageText.innerText = 'Error';
-                    stepText.innerText = error.message;
-                    btnText.innerText = 'Failed to restructure';
-                    optimizeBtn.classList.remove('bg-gradient-to-r', 'from-primary', 'to-indigo-600');
-                    optimizeBtn.classList.add('bg-red-600');
-                    optimizeBtn.disabled = false;
-                    optimizeBtn.classList.remove('opacity-70', 'cursor-not-allowed');
-                }
-            });
-        }
     });
 </script>

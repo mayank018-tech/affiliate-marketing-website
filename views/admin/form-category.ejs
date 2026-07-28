@@ -26,8 +26,40 @@
 
                 <!-- Icon -->
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">FontAwesome Icon Class (e.g., 'fas fa-laptop')</label>
-                    <input type="text" name="icon" value="<%= category.icon || '' %>" required class="w-full px-4 py-3 bg-white/60 dark:bg-[#412D15]/40 border border-slate-200 dark:border-[#412D15]/50 rounded-xl text-slate-800 dark:text-[#E1DCC9] placeholder-slate-400 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all">
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">FontAwesome Icon Class</label>
+                    <input type="text" id="icon-input" name="icon" value="<%= category.icon || '' %>" required class="w-full px-4 py-3 bg-white/60 dark:bg-[#412D15]/40 border border-slate-200 dark:border-[#412D15]/50 rounded-xl text-slate-800 dark:text-[#E1DCC9] placeholder-slate-400 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Select an icon below or type one">
+                    
+                    <div class="mt-4 p-4 bg-slate-50 dark:bg-[#412D15]/20 rounded-2xl border border-slate-200/50 dark:border-[#412D15]/30">
+                        <span class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">Quick Select Icon</span>
+                        <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
+                            <% 
+                            const quickIcons = [
+                                { class: 'fas fa-female', label: 'Girls' },
+                                { class: 'fas fa-shoe-prints', label: 'Shoes' },
+                                { class: 'fas fa-clock', label: 'Watches' },
+                                { class: 'fas fa-tshirt', label: 'Fashion' },
+                                { class: 'fas fa-laptop', label: 'Tech' },
+                                { class: 'fas fa-gamepad', label: 'Gaming' },
+                                { class: 'fas fa-heart', label: 'Beauty' },
+                                { class: 'fas fa-dumbbell', label: 'Fitness' },
+                                { class: 'fas fa-home', label: 'Home' },
+                                { class: 'fas fa-couch', label: 'Furniture' },
+                                { class: 'fas fa-utensils', label: 'Kitchen' },
+                                { class: 'fas fa-book', label: 'Study' },
+                                { class: 'fas fa-shopping-bag', label: 'Shopping' },
+                                { class: 'fas fa-gem', label: 'Jewelry' },
+                                { class: 'fas fa-gift', label: 'Gifts' },
+                                { class: 'fas fa-tags', label: 'Deals' }
+                            ];
+                            %>
+                            <% quickIcons.forEach(icon => { %>
+                                <button type="button" class="icon-select-btn flex flex-col items-center justify-center p-3 rounded-xl border border-slate-200 dark:border-[#412D15]/40 bg-white dark:bg-[#412D15]/30 hover:border-primary dark:hover:border-indigo-400 transition-all text-slate-700 dark:text-[#E1DCC9]" data-class="<%= icon.class %>">
+                                    <i class="<%= icon.class %> text-lg mb-1"></i>
+                                    <span class="text-[10px] font-medium opacity-80"><%= icon.label %></span>
+                                </button>
+                            <% }) %>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -40,3 +72,32 @@
         </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const iconInput = document.getElementById('icon-input');
+        const iconButtons = document.querySelectorAll('.icon-select-btn');
+
+        function updateActiveIcon() {
+            const currentVal = iconInput.value.trim();
+            iconButtons.forEach(btn => {
+                const iconClass = btn.getAttribute('data-class');
+                if (currentVal === iconClass) {
+                    btn.classList.add('ring-2', 'ring-primary', 'border-primary', 'dark:ring-indigo-400', 'bg-indigo-50/50', 'dark:bg-indigo-950/20');
+                } else {
+                    btn.classList.remove('ring-2', 'ring-primary', 'border-primary', 'dark:ring-indigo-400', 'bg-indigo-50/50', 'dark:bg-indigo-950/20');
+                }
+            });
+        }
+
+        iconButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                iconInput.value = btn.getAttribute('data-class');
+                updateActiveIcon();
+            });
+        });
+
+        iconInput.addEventListener('input', updateActiveIcon);
+        updateActiveIcon();
+    });
+</script>

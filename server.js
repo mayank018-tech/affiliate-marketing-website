@@ -317,16 +317,148 @@ app.post('/admin/products', isAdmin, upload.array('images'), async (req, res) =>
         }
     }
     
-    await supabase.from('products').insert([{
+    const { data: newProduct, error: insertError } = await supabase.from('products').insert([{
         title, slug, description, price, 
         image_url: image_url || null, 
         image_urls: JSON.stringify(image_urls), 
         affiliate_link, 
         badge: badge || null, 
         category_id: category_id || null
-    }]);
+    }]).select('*').single();
+    
+    if (insertError) {
+        console.error("Supabase insert error:", insertError);
+    }
+    
+    // Asynchronously trigger structuring with slug fallback
+    (async () => {
+        let productToStructure = newProduct;
+        if (!productToStructure) {
+            const { data: fetchedProduct } = await supabase
+                .from('products')
+                .select('*')
+                .eq('slug', slug)
+                .single();
+            productToStructure = fetchedProduct;
+        }
+        if (productToStructure) {
+            autoStructureProductDescription(productToStructure);
+        }
+    })();
+
     res.redirect('/admin');
 });
+
+// Helper to structure description using Groq/Grok API and push to Git repository
+async function autoStructureProductDescription(product) {
+    try {
+        const apiKey = process.env.GROQ_API_KEY || process.env.GROK_API_KEY;
+        if (!apiKey) {
+            console.warn('Missing GROQ_API_KEY or GROK_API_KEY. Skipping automatic description structuring.');
+            return { success: false, error: 'Missing API key' };
+        }
+
+        const rawDescription = product.description || '';
+        if (!rawDescription.trim()) {
+            return { success: false, error: 'Empty description' };
+        }
+
+        const prompt = `You are an expert product copywriter. 
+Analyze the following unstructured, messy, or jumbled product description and rewrite it into a highly professional, well-structured, readable format.
+Use Markdown layout with:
+- A brief engaging introductory paragraph.
+- A "Key Features" bulleted list.
+- A "Technical Details / Specifications" section if applicable.
+Do not invent any specifications or facts that are not present or clearly implied by the description.
+Only output the structured markdown content. Do not include markdown code block wrapping (like \`\`\`markdown) in your response, just the plain markdown text.
+
+Product Title: ${product.title}
+Messy Description:
+${rawDescription}`;
+
+        // Detect if key is a Groq key (usually starts with gsk_) or Grok/xAI key
+        const isGroq = apiKey.startsWith('gsk_');
+        const endpoint = isGroq ? "https://api.groq.com/openai/v1/chat/completions" : "https://api.x.ai/v1/chat/completions";
+        const modelName = isGroq ? "llama-3.3-70b-versatile" : "grok-beta";
+
+        const response = await fetch(endpoint, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+                messages: [
+                    {
+                        role: "system",
+                        content: "You are a professional product description editor."
+                    },
+                    {
+                        role: "user",
+                        content: prompt
+                    }
+                ],
+                model: modelName,
+                temperature: 0
+            })
+        });
+
+        if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(`API error (${isGroq ? 'Groq' : 'Grok'}): ${response.status} - ${errText}`);
+        }
+
+        const data = await response.json();
+        let structuredDesc = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+
+        if (!structuredDesc) {
+            throw new Error(`Failed to generate description with ${isGroq ? 'Groq' : 'Grok'}`);
+        }
+
+        // Clean markdown wrapper
+        structuredDesc = structuredDesc.replace(/^```markdown\n/, '').replace(/^```\n/, '').replace(/\n```$/, '').trim();
+
+        // Update Supabase
+        const { error: updateError } = await supabase
+            .from('products')
+            .update({ description: structuredDesc })
+            .eq('id', product.id);
+
+        if (updateError) {
+            throw new Error(`Database update failed: ${updateError.message}`);
+        }
+
+        // Write local file
+        const fs = require('fs');
+        const path = require('path');
+        const dir = path.join(__dirname, 'descriptions');
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+        const filepath = path.join(dir, `${product.slug}.md`);
+        fs.writeFileSync(filepath, `# ${product.title}\n\n${structuredDesc}\n`, 'utf8');
+
+        // Git push changes to repository
+        const { exec } = require('child_process');
+        const commitMsg = `docs(product): structure description for ${product.title}`;
+        
+        exec(`git add "descriptions/${product.slug}.md" && git commit -m "${commitMsg.replace(/"/g, '\\"')}" && git push origin main`, 
+        { cwd: __dirname }, 
+        (gitErr, stdout, stderr) => {
+            if (gitErr) {
+                console.error('Git integration failed during auto-structure:', gitErr, stderr);
+            } else {
+                console.log('Git push success during auto-structure:', stdout);
+            }
+        });
+
+        return { success: true, description: structuredDesc };
+
+    } catch (err) {
+        console.error('Error during autoStructureProductDescription:', err);
+        return { success: false, error: err.message };
+    }
+}
 
 app.get('/admin/products/:id/edit', isAdmin, async (req, res) => {
     const { data: product } = await supabase.from('products').select('*').eq('id', req.params.id).single();
@@ -362,6 +494,18 @@ app.post('/admin/products/:id', isAdmin, upload.array('images'), async (req, res
         badge: badge || null, 
         category_id: category_id || null
     }).eq('id', req.params.id);
+
+    // Asynchronously trigger auto-structuring on edits
+    (async () => {
+        const { data: updatedProduct } = await supabase
+            .from('products')
+            .select('*')
+            .eq('id', req.params.id)
+            .single();
+        if (updatedProduct) {
+            autoStructureProductDescription(updatedProduct);
+        }
+    })();
     
     res.redirect('/admin');
 });
@@ -369,114 +513,6 @@ app.post('/admin/products/:id', isAdmin, upload.array('images'), async (req, res
 app.post('/admin/products/:id/delete', isAdmin, async (req, res) => {
     await supabase.from('products').delete().eq('id', req.params.id);
     res.redirect('/admin');
-});
-
-// Route to structure product description using Gemini and push to Git repository
-app.post('/admin/products/:id/structure-description', isAdmin, async (req, res) => {
-    try {
-        const productId = req.params.id;
-        const apiKey = process.env.GEMINI_API_KEY || process.env.API_KEY;
-
-        if (!apiKey) {
-            return res.status(400).json({ error: 'Missing GEMINI_API_KEY in environment variables.' });
-        }
-
-        // Fetch product
-        const { data: product, error: fetchError } = await supabase
-            .from('products')
-            .select('*')
-            .eq('id', productId)
-            .single();
-
-        if (fetchError || !product) {
-            return res.status(404).json({ error: 'Product not found' });
-        }
-
-        const rawDescription = product.description || '';
-        if (!rawDescription.trim()) {
-            return res.status(400).json({ error: 'Product description is empty' });
-        }
-
-        const fs = require('fs');
-        const { exec } = require('child_process');
-        const { GoogleGenAI } = require('@google/genai');
-
-        // Initialize Gemini
-        const ai = new GoogleGenAI({ apiKey });
-        const prompt = `You are an expert product copywriter. 
-Analyze the following unstructured, messy, or jumbled product description and rewrite it into a highly professional, well-structured, readable format.
-Use Markdown layout with:
-- A brief engaging introductory paragraph.
-- A "Key Features" bulleted list.
-- A "Technical Details / Specifications" section if applicable.
-Do not invent any specifications or facts that are not present or clearly implied by the description.
-Only output the structured markdown content. Do not include markdown code block wrapping (like \`\`\`markdown) in your response, just the plain markdown text.
-
-Product Title: ${product.title}
-Messy Description:
-${rawDescription}`;
-
-        const geminiRes = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
-            contents: prompt
-        });
-
-        let structuredDesc = geminiRes.text;
-        if (!structuredDesc) {
-            return res.status(500).json({ error: 'Failed to generate description with Gemini' });
-        }
-
-        // Clean output if model returned code block wrapper anyway
-        structuredDesc = structuredDesc.replace(/^```markdown\n/, '').replace(/^```\n/, '').replace(/\n```$/, '').trim();
-
-        // Update database
-        const { error: updateError } = await supabase
-            .from('products')
-            .update({ description: structuredDesc })
-            .eq('id', productId);
-
-        if (updateError) {
-            console.error('Database update error:', updateError);
-            return res.status(500).json({ error: 'Failed to update database' });
-        }
-
-        // Ensure descriptions directory exists
-        const dir = path.join(__dirname, 'descriptions');
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true });
-        }
-
-        // Write to repo file
-        const filepath = path.join(dir, `${product.slug}.md`);
-        fs.writeFileSync(filepath, `# ${product.title}\n\n${structuredDesc}\n`, 'utf8');
-
-        // Git push changes to repository
-        const commitMsg = `docs(product): structure description for ${product.title}`;
-        
-        exec(`git add "descriptions/${product.slug}.md" && git commit -m "${commitMsg.replace(/"/g, '\\"')}" && git push origin main`, 
-        { cwd: __dirname }, 
-        (gitErr, stdout, stderr) => {
-            if (gitErr) {
-                console.error('Git integration failed:', gitErr, stderr);
-                return res.json({ 
-                    success: true, 
-                    description: structuredDesc, 
-                    git_pushed: false, 
-                    git_error: stderr || gitErr.message 
-                });
-            }
-            console.log('Git push success:', stdout);
-            return res.json({ 
-                success: true, 
-                description: structuredDesc, 
-                git_pushed: true 
-            });
-        });
-
-    } catch (err) {
-        console.error('Error structuring description:', err);
-        res.status(500).json({ error: err.message || 'Internal Server Error' });
-    }
 });
 
 
