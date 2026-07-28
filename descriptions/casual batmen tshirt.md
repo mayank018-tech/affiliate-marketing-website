@@ -1,22 +1,13 @@
 # The Souled Store Batman: Vengeance Men and Boys Round Neck Grey All Over Printed Cotton Oversized Full Sleeve T-Shirts
 
-The Souled Store Batman: Vengeance Men and Boys Round Neck Grey All Over Printed Cotton Oversized Full Sleeve T-Shirts are a must-have for any Batman fan. Made from 100% cotton, these comfortable and stylish t-shirts are perfect for casual outings and everyday wear. With their unique all-over print design, they are sure to turn heads and make a statement.
+The Souled Store Batman: Vengeance Men and Boys Round Neck Grey All Over Printed Cotton Oversized Full Sleeve T-Shirts are a must-have for any Batman fan. Made from 100% cotton, these oversized fit t-shirts offer the perfect blend of comfort and fashion, making them ideal for casual outings and everyday wear.
 
 * Key Features
-  * 100% cotton material for comfort and durability
-  * All-over print design with high definition prints
-  * Oversized fit for a relaxed and casual look
-  * Long sleeve design for added style and comfort
-  * Crew neck collar style for a classic look
-  * Available in various sizes, including XS, S, M, L, XL, and 2XL
+  * 100% cotton material for maximum comfort
+  * All-over print design with high-definition prints
+  * Oversized fit with long sleeves and crew neck collar style
+  * Perfect for casual outings, various activities, and everyday wear
+  * Official merchandise of Batman, ensuring authenticity and quality
 
 Technical Details / Specifications
-The Souled Store Batman: Vengeance t-shirts have the following specifications:
-  * Material composition: 100% Cotton
-  * Pattern: All Over Print
-  * Fit type: Oversized Fit
-  * Sleeve type: Long Sleeve
-  * Collar style: Crew Neck
-  * Neck style: Crew Neck
-  * Country of Origin: India
-Note: Colours may slightly vary depending on your screen brightness and product specifications may vary by +/- 10%.
+The t-shirt is made from 100% cotton and features an all-over print design with high-definition prints. The oversized fit ensures a comfortable wear, while the long sleeves and crew neck collar style add to the overall aesthetic. The product is made in India and is available in various sizes, including XS, S, M, L, XL, and 2XL. Please note that colours may slightly vary depending on your screen brightness and the product specifications may vary by +/- 10%.
