@@ -371,6 +371,115 @@ app.post('/admin/products/:id/delete', isAdmin, async (req, res) => {
     res.redirect('/admin');
 });
 
+// Route to structure product description using Gemini and push to Git repository
+app.post('/admin/products/:id/structure-description', isAdmin, async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const apiKey = process.env.GEMINI_API_KEY || process.env.API_KEY;
+
+        if (!apiKey) {
+            return res.status(400).json({ error: 'Missing GEMINI_API_KEY in environment variables.' });
+        }
+
+        // Fetch product
+        const { data: product, error: fetchError } = await supabase
+            .from('products')
+            .select('*')
+            .eq('id', productId)
+            .single();
+
+        if (fetchError || !product) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+
+        const rawDescription = product.description || '';
+        if (!rawDescription.trim()) {
+            return res.status(400).json({ error: 'Product description is empty' });
+        }
+
+        const fs = require('fs');
+        const { exec } = require('child_process');
+        const { GoogleGenAI } = require('@google/genai');
+
+        // Initialize Gemini
+        const ai = new GoogleGenAI({ apiKey });
+        const prompt = `You are an expert product copywriter. 
+Analyze the following unstructured, messy, or jumbled product description and rewrite it into a highly professional, well-structured, readable format.
+Use Markdown layout with:
+- A brief engaging introductory paragraph.
+- A "Key Features" bulleted list.
+- A "Technical Details / Specifications" section if applicable.
+Do not invent any specifications or facts that are not present or clearly implied by the description.
+Only output the structured markdown content. Do not include markdown code block wrapping (like \`\`\`markdown) in your response, just the plain markdown text.
+
+Product Title: ${product.title}
+Messy Description:
+${rawDescription}`;
+
+        const geminiRes = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt
+        });
+
+        let structuredDesc = geminiRes.text;
+        if (!structuredDesc) {
+            return res.status(500).json({ error: 'Failed to generate description with Gemini' });
+        }
+
+        // Clean output if model returned code block wrapper anyway
+        structuredDesc = structuredDesc.replace(/^```markdown\n/, '').replace(/^```\n/, '').replace(/\n```$/, '').trim();
+
+        // Update database
+        const { error: updateError } = await supabase
+            .from('products')
+            .update({ description: structuredDesc })
+            .eq('id', productId);
+
+        if (updateError) {
+            console.error('Database update error:', updateError);
+            return res.status(500).json({ error: 'Failed to update database' });
+        }
+
+        // Ensure descriptions directory exists
+        const dir = path.join(__dirname, 'descriptions');
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+
+        // Write to repo file
+        const filepath = path.join(dir, `${product.slug}.md`);
+        fs.writeFileSync(filepath, `# ${product.title}\n\n${structuredDesc}\n`, 'utf8');
+
+        // Git push changes to repository
+        const commitMsg = `docs(product): structure description for ${product.title}`;
+        
+        exec(`git add "descriptions/${product.slug}.md" && git commit -m "${commitMsg.replace(/"/g, '\\"')}" && git push origin main`, 
+        { cwd: __dirname }, 
+        (gitErr, stdout, stderr) => {
+            if (gitErr) {
+                console.error('Git integration failed:', gitErr, stderr);
+                return res.json({ 
+                    success: true, 
+                    description: structuredDesc, 
+                    git_pushed: false, 
+                    git_error: stderr || gitErr.message 
+                });
+            }
+            console.log('Git push success:', stdout);
+            return res.json({ 
+                success: true, 
+                description: structuredDesc, 
+                git_pushed: true 
+            });
+        });
+
+    } catch (err) {
+        console.error('Error structuring description:', err);
+        res.status(500).json({ error: err.message || 'Internal Server Error' });
+    }
+});
+
+
 app.listen(PORT, async () => {
     console.log(`Server running on http://localhost:${PORT}`);
     await ensureBucketExists();
